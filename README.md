@@ -7,9 +7,9 @@ Inspired by the good old (and I mean *old*) Zork
 
 type:
 
-  $ lein repl
-  user=> (use 'qog.core)
-  user=> (p)
+    $ lein repl
+    user=> (use 'qog.core)
+    user=> (p)
 
 ## License
 
