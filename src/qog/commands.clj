@@ -4,20 +4,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-;get
-(defn get-cmd [item-str room]
-	(let [item (search-rinv item-str room)]
-		(if (nil? item) 
-			(println (str "You can't do that."))
-			(do 
-				(take-item-from-world location item)
-				(println (str "You now have " (get-item-description item inv) ".")))
-			)))
-
-			
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;put
 (defn put-cmd [item-str]
 	(let [item (search-inv item-str)]
@@ -71,8 +57,94 @@
 	))
 				
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(def commands
+	{:get {
+		:name "get"
+		:helptext "use to pick up items.... FIXME"
+	   	:fn (fn [item-str input] 
+			(let [room (location world)
+				  item (search-rinv item-str room)]
+				(if (nil? item) 
+					(println (str "You can't do that."))
+					(do 
+						(take-item-from-world location item)
+						(println (str "You now have " (get-item-description item inv) ".")))
+					)))
+	}
+	:put {
+		:name "put"
+		:helptext "use to put around/through items.... FIXME"
+		:fn (fn [item-str input]
+				(let [item (search-inv item-str)]
+					(if (nil? item)
+						(println (str "You don't have a " item-str"."))
+						(do 
+							(println (str "You put down " (get-item-description item inv) "."))
+							(add-item-to-world location item)
+							(if (and (= location :yard ) (= item :meat))
+								(do
+									(println "The dog gobbles up the meat and runs off into the bushes")
+									(zap-item-from-world :yard :meat)
+									(rm-obj-from-world :yard :dog))))
+					)))}
+	:quit {
+		:name "quit"
+		:helptext ".... FIXME"
+		:fn (fn [_ _]
+			(set-not-done false)
+			)}
+
+	:n {:name "n" :helptext ".... FIXME" :fn (fn [_ _] (move "n"))}
+	:s {:name "s" :helptext ".... FIXME" :fn (fn [_ _] (move "s"))}
+	:e {:name "e" :helptext ".... FIXME" :fn (fn [_ _] (move "e"))}
+	:w {:name "w" :helptext ".... FIXME" :fn (fn [_ _] (move "w"))}
+	:u {:name "u" :helptext ".... FIXME" :fn (fn [_ _] (move "u"))}
+	:d {:name "d" :helptext ".... FIXME" :fn (fn [_ _] (move "d"))}
+	
+	:inv {
+		:name "inv"
+		:helptext ".... FIXME"
+		:fn (fn [_ _]
+			(if (empty? inv) (println "You are empty handed.")
+							 (println (str "You have: " (get-inventory-descriptions inv) "."))))}
+	:light {
+		:name "light"
+		:helptext ".... FIXME"
+		:fn (fn [p _]
+			(let [item-name (keyword p)]
+				(cond (not (contains? inv item-name)) (println (str "You don't have a " p "."))
+					  (not (contains? inv :match)) (println "You need a match to light things.")
+					  (not (= item-name :lantern)) (println (str "You can't light a " p "."))
+					  true (do (invrm :match)
+							   (invrm item-name)
+							   (invadd :lit_lantern {:des "a lit lantern" :regex #"lit lantern|lit|lantern"})
+							   (println (str "You have lit a " p))))))}
+	}
+)
+(defn get-cmd [] nil) ;FIXME
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn do-commands [input]
+	(let [
+	  input-lower (lower-case input)
+	  x (split input-lower #" ")
+	  c (first x)
+	  p (join " " (rest x))
+	  room (location world)
+	  command-key (some (fn [[key val]] (if (= c (get val :name)) key nil)) commands)
+	]
+	(if (nil? command-key)
+		(println (random-answer 
+					(let [x (str "What is this \"" input "\" of which you speak?")]
+						[x x x (str "What do you mean, \"" input "?\"") (str "I don't know what \"" input "\" means.")]
+					)))
+		(let [command (get commands command-key)]
+			((get command :fn) p input)
+		)
+	)
+))
+
+(defn do-commandsx [input]
 	(let [
 	  input-lower (lower-case input)
 	  x (split input-lower #" ")
@@ -124,7 +196,7 @@
 
 		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 		
-		(= c "quit") (def not_done false)
+		(= c "quit") (set-not-done false)
 		
 		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 		
@@ -149,3 +221,14 @@
 										[x x x (str "What do you mean, \"" input "?\"") (str "I don't know what \"" input "\" means.")]
 									)))
 )))
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	

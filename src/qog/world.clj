@@ -102,6 +102,9 @@
 		:l_ex {:des "The blinding light makes it impossible to see.",
 							:con {:s :l_4}
 							:rinv {}}
+		:d_squishy_floor {:des "You are in a large square FIXME",
+							:con {:s :l_4}
+							:rinv {}}
 		}
 	)
 )
@@ -111,7 +114,7 @@
 
 (defn initialize-inventory []
 ;	(def inv {})
-	(def inv {:copper_key "k" :meat "m" :lit_lantern "ll" :journal "j"})
+	(def inv {:copper_key "k" :meat "m" :lit_lantern "ll"})
 	)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -286,3 +289,7 @@
 	(print-stuff-in-room :rinv)
 	(print-stuff-in-room :robj)
 	)			
+
+
+(defn set-not-done [v]
+	(def not_done v))
