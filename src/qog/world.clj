@@ -1,4 +1,4 @@
-(ns tbadventure.world)
+(ns qog.world)
 (use  '[clojure.string :only (lower-case split join)])
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defn initialize-world []

@@ -1,8 +1,8 @@
 ;name
-(ns tbadventure.core)
-(use 'tbadventure.commands)
-(use 'tbadventure.world)
-(defn rl [] (use 'tbadventure.core :reload))
+(ns qog.core)
+(use 'qog.commands)
+(use 'qog.world)
+(defn rl [] (use 'qog.core :reload))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

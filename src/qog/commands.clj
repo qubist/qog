@@ -1,6 +1,6 @@
-(ns tbadventure.commands)
+(ns qog.commands)
 (use  '[clojure.string :only (lower-case split join)])
-(use 'tbadventure.world)
+(use 'qog.world)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
