@@ -1,6 +1,15 @@
 (ns qog.world)
 (use  '[clojure.string :only (lower-case split join)])
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn initialize-inventory []
+	(def inv {})
+;	(def inv {:copper_key {:des "a large copper key" :regex #"copper|key|large" } :meat "a hunk of meat" :lit_lantern "a lit lantern" :journal "a leatherbound journal"})
+	)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn initialize-world []
 	(def not_done true)
 	(def riddle-answered false)
@@ -17,7 +26,7 @@
 		:bedroom {:des "You are in a bedroom with a large bed, and a bedside table.",
 							:con {:w :starting_chamber}
 							:rinv {:lantern "a lantern"}}
-		:cellar_stairs {:des "You are in a dank staircase that leads down.",
+		:cellar_stairs {:des "You are at the top of a dank staircase that leads down.",
 							:con {:d :cellar, :e :starting_chamber}
 							:rinv {:brick "a brick"}}
 		:cellar {:des "You are in a damp, dimly lit cellar with shelves containing many different things.",
@@ -57,7 +66,7 @@
 		:forest {:des "You managed to bushwhack your way through the forest and you come to a small clearing.",
 							:con {:e :pool}
 							:rinv {:black_pebble {:des "a round, black pebble" :regex #"rock|round|stone|pebble|black"}}}						
-		:cave {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. You can see the outlines of strange markings on the walls, but you cannot read them",
+		:cave {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. You can see the outlines of strange markings on the walls, but you cannot read them.",
 							:con {:w :cave_door, :u :archive}
 							:rinv {}}
 		:archive {:des "You are in a small stone room. empty scroll cubbys line the walls and several barren bookshelves are arranged along the walls.",
@@ -100,10 +109,10 @@
 							:con {:e :l_3}
 							:rinv {}}
 		:l_ex {:des "The blinding light makes it impossible to see.",
-							:con {:s :l_4}
+							:con {:s :l_4, :w :mud_room}
 							:rinv {}}
-		:d_squishy_floor {:des "You are in a large square FIXME",
-							:con {:s :l_4}
+		:mud_room {:des "You are in a large square room. The floor is completely covered with thick, squishy mud, up to your ankles. to the North there is a door.",
+							:con {:e :l_ex,} ;:n :zegg_room} FIXME
 							:rinv {}}
 		}
 	)
@@ -112,10 +121,6 @@
 (defn set-location [con]
 	(def location con))
 
-(defn initialize-inventory []
-;	(def inv {})
-	(def inv {:copper_key "k" :meat "m" :lit_lantern "ll"})
-	)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -129,7 +134,7 @@
 
 ;human readable list of inventorys
 (defn get-inventory-descriptions [inventory]
-	(join ", " (map #(get-item-description %  inventory)(keys inventory))))
+	(join ",\n" (map #(get-item-description %  inventory)(keys inventory))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

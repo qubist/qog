@@ -58,9 +58,18 @@
 				
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def commands
-	{:get {
+	(array-map
+		
+	:n {:name "n" :helptext "Description: used to travel to the North\nUsage: n" :fn (fn [_ _] (move "n"))}
+	:s {:name "s" :helptext "Description: used to travel to the South\nUsage: s" :fn (fn [_ _] (move "s"))}
+	:e {:name "e" :helptext "Description: used to travel to the East\nUsage: e" :fn (fn [_ _] (move "e"))}
+	:w {:name "w" :helptext "Description: used to travel to the West\nUsage: w" :fn (fn [_ _] (move "w"))}
+	:u {:name "u" :helptext "Description: used to go up\nUsage: u" :fn (fn [_ _] (move "u"))}
+	:d {:name "d" :helptext "Description: used to go down\nUsage: d" :fn (fn [_ _] (move "d"))}
+	
+	:get {
 		:name "get"
-		:helptext "use to pick up items.... FIXME"
+		:helptext "Description: used to pick up items\nUsage: get <item>"
 	   	:fn (fn [item-str input] 
 			(let [room (location world)
 				  item (search-rinv item-str room)]
@@ -70,10 +79,11 @@
 						(take-item-from-world location item)
 						(println (str "You now have " (get-item-description item inv) ".")))
 					)))
-	}
+		}
+		
 	:put {
 		:name "put"
-		:helptext "use to put around/through items.... FIXME"
+		:helptext "Description: used to put down items\nUsage: put <item>"
 		:fn (fn [item-str input]
 				(let [item (search-inv item-str)]
 					(if (nil? item)
@@ -87,41 +97,74 @@
 									(zap-item-from-world :yard :meat)
 									(rm-obj-from-world :yard :dog))))
 					)))}
+					
+	:inv {
+		:name "inv"
+		:helptext "Description: used to display the items you are carrying\nUsage: inv"
+		:fn (fn [_ _]
+			(if (empty? inv) (println "You are empty handed.")
+							 (println (str "You have:\n" (get-inventory-descriptions inv) "."))))}
+							
+	:say {
+		:name "say"
+		:helptext "Description: used to talk to in game\nUsage: say <your text here>"
+		:fn (fn [_ input]
+			(cond (= location :sphinx) (if (re-find #"(night|day).+(night|day)" (lower-case input))
+					(do (println "The Sphinx says \"Correct, you may pass!\" Strangely, it then yawns and goes to sleep.")
+						(set-riddle-answered)
+						(change-room-des :sphinx "You are in a dim hallway. In front of you lies a sleeping Sphinx. It is snoring heavily. Behind the Sphinx, the rest of the hallway is hard too see because of a blinding light."))
+					(println "The Sphinx says \"That is not the answer. Try again\""))
+				  
+				  true (println "talking to one's self is a sign of impending mental collapse")
+			))
+		}
+		
+	:read {
+		:name "read"
+		:helptext "Description: used to read items\nUsage: read <item>"
+		:fn (fn [p _]
+			(let [have-readable (contains? inv :journal)]
+			  (cond (and (= p "journal") have-readable (not(= location :study))) (println "You open the journal to find that age has worn the already faint marks from the page. You can only make out some of the words and letters, the rest are smudged or faded beyond recognition.You read from the last entry:\n\"M y 12, 174 A. .E. \nI f ar that t ey h  e disc     d our    in  plac . T   Ojer n Gem  ald i  ot saf  here. My fa  e  assu es m  that t   ke  is h  den, an   e wil   e s  e. I am n t so   rtain. Tom r  w  e  will relo  te the    eral  t  a s     po  ti  . It will b  v ry dan    us.\nI l  e  n fe r.\nTh y a e comi g.\"")
+					(and (= p "journal") have-readable (= location :study)) (println "The journal emits a green glow from the pages and the letters are reformed by green glowing lines. The passage reads:\n\"May 12, 174 A.C.E. \nI fear that they have discovered our hiding place. The Ojeran Gemerald is not safe here. My fathe  assures me that the key is hidden, and we will be safe. I am not so certain. Tomorrow we  will relocate the Gemerald to a safer position. It will be very dangerous.\nI live in fear.\nThey are coming.\"")
+					(= p "") (println "What would you like to read?")
+					(not have-readable) (println "You have nothing to read")
+				))
+			)}
+			
+	:light {
+	:name "light"
+	:helptext "Description: used to light items (like lanterns) with a match\nUsage: light <item>"
+	:fn (fn [p _]
+		(let [item-name (keyword p)]
+			(cond (not (contains? inv item-name)) (println (str "You don't have a " p "."))
+				  (not (contains? inv :match)) (println "You need a match to light things.")
+				  (not (= item-name :lantern)) (println (str "You can't light a " p "."))
+				  true (do (invrm :match)
+						   (invrm item-name)
+						   (invadd :lit_lantern {:des "a lit lantern" :regex #"lit lantern|lit|lantern"})
+						   (println (str "You have lit a " p))))))}
+						
+	:help {
+		:name "help"
+		:helptext "Description: used to display the help menu\nUsage: help"
+		:fn (fn [p _]
+			(cond
+				(= p "") (println (join "\n" (map (fn [[key val]] (get val :name)) commands)))
+				(= p ".") (println "FIXME")
+				true (println (str p " is not a command"))
+				)
+			)
+			}
+			
 	:quit {
 		:name "quit"
-		:helptext ".... FIXME"
+		:helptext "Description: used to exit out of the game\nUsage: quit"
 		:fn (fn [_ _]
 			(set-not-done false)
 			)}
-
-	:n {:name "n" :helptext ".... FIXME" :fn (fn [_ _] (move "n"))}
-	:s {:name "s" :helptext ".... FIXME" :fn (fn [_ _] (move "s"))}
-	:e {:name "e" :helptext ".... FIXME" :fn (fn [_ _] (move "e"))}
-	:w {:name "w" :helptext ".... FIXME" :fn (fn [_ _] (move "w"))}
-	:u {:name "u" :helptext ".... FIXME" :fn (fn [_ _] (move "u"))}
-	:d {:name "d" :helptext ".... FIXME" :fn (fn [_ _] (move "d"))}
-	
-	:inv {
-		:name "inv"
-		:helptext ".... FIXME"
-		:fn (fn [_ _]
-			(if (empty? inv) (println "You are empty handed.")
-							 (println (str "You have: " (get-inventory-descriptions inv) "."))))}
-	:light {
-		:name "light"
-		:helptext ".... FIXME"
-		:fn (fn [p _]
-			(let [item-name (keyword p)]
-				(cond (not (contains? inv item-name)) (println (str "You don't have a " p "."))
-					  (not (contains? inv :match)) (println "You need a match to light things.")
-					  (not (= item-name :lantern)) (println (str "You can't light a " p "."))
-					  true (do (invrm :match)
-							   (invrm item-name)
-							   (invadd :lit_lantern {:des "a lit lantern" :regex #"lit lantern|lit|lantern"})
-							   (println (str "You have lit a " p))))))}
-	}
+		
+	)
 )
-(defn get-cmd [] nil) ;FIXME
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn do-commands [input]
@@ -143,92 +186,3 @@
 		)
 	)
 ))
-
-(defn do-commandsx [input]
-	(let [
-	  input-lower (lower-case input)
-	  x (split input-lower #" ")
-	  c (first x)
-	  p (join " " (rest x))
-	  room (location world)]
-	
-	(cond
-		(or (= c "n") (= c "s") (= c "e") (= c "w") (= c "u") (= c "d")) (move c)
-	
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		
-		(= c "get") (get-cmd p room)
-						
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;							
-						
-		(= c "put") (put-cmd p)
-						
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;		
-						
-		(= c "inv") (if (empty? inv) (println "You are empty handed.")
-									 (println (str "You have: " (get-inventory-descriptions inv) ".")))
-		
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;							
-									
-		(= c "light")
-			(let [item-name (keyword p)]
-				(cond (not (contains? inv item-name)) (println (str "You don't have a " p "."))
-					  (not (contains? inv :match)) (println "You need a match to light things.")
-					  (not (= item-name :lantern)) (println (str "You can't light a " p "."))
-					  true (do (invrm :match)
-							   (invrm item-name)
-							   (invadd :lit_lantern {:des "a lit lantern" :regex #"lit lantern|lit|lantern"})
-							   (println (str "You have lit a " p))
-						   )
-				)
-			)
-		
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-		(= c "read")
-			(let [have-readable (contains? inv :journal)]
-			  (cond (and (= p "journal") have-readable (not(= location :study))) (println "You open the journal to find that age has worn the already faint marks from the page. You can only make out some of the words and letters, the rest are smudged or faded beyond recognition.You read from the last entry:\n\"M y 12, 174 A. .E. \nI f ar that t ey h  e disc     d our    in  plac . T   Ojer n Gem  ald i  ot saf  here. My fa  e  assu es m  that t   ke  is h  den, an   e wil   e s  e. I am n t so   rtain. Tom r  w  e  will relo  te the    eral  t  a s     po  ti  . It will b  v ry dan    us.\nI l  e  n fe r.\nTh y a e comi g.\"")
-					(and (= p "journal") have-readable (= location :study)) (println "The journal emits a green glow from the pages and the letters are reformed by green glowing lines. The passage reads:\n\"May 12, 174 A.C.E. \nI fear that they have discovered our hiding place. The Ojeran Gemerald is not safe here. My fathe  assures me that the key is hidden, and we will be safe. I am not so certain. Tomorrow we  will relocate the Gemerald to a safer position. It will be very dangerous.\nI live in fear.\nThey are coming.\"")
-					(= p "") (println "What would you like to read?")
-					(not have-readable) (println "You have nothing to read")
-				))
-		
-
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		
-		(= c "quit") (set-not-done false)
-		
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		
-		(= c "say")
-			(cond (= location :sphinx) (if (re-find #"(night|day).+(night|day)" input-lower)
-					(do (println "The Sphinx says \"Correct, you may pass!\" Strangely, it then yawns and goes to sleep.")
-						(set-riddle-answered)
-						(change-room-des :sphinx "You are in a dim hallway. In front of you lies a sleeping Sphinx. It is snoring heavily. Behind the Sphinx, the rest of the hallway is hard too see because of a blinding light."))
-					(println "The Sphinx says \"That is not the answer. Try again\""))
-				  
-				  true (println "talking to one's self is a sign of impending mental collapse")
-					)
-			
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		
-		(= c "help") (println "\nYa know why they call that section of the book store \"self help?\" Just kidding!\n(HELP TEXT HERE)\n")
-		
-		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		
-		(not(= c "")) (println (random-answer 
-									(let [x (str "What is this \"" input "\" of which you speak?")]
-										[x x x (str "What do you mean, \"" input "?\"") (str "I don't know what \"" input "\" means.")]
-									)))
-)))
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
