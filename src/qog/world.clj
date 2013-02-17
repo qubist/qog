@@ -57,7 +57,7 @@
 		:road2 {:des "You are on the road that runs from East to West. The road continues to the West. To the East, there is a forest, with a path leading into it. You can see a clearing at the end of the path.",
 							:con {:w :road :e :cave_door}
 							:rinv {}}
-		:cave_door {:des "You are outside of a huge door that is set in a cliff. In the center of the door there is a large keyhole inlaid with copper. To the North you can see a overgrown path.",
+		:cave_door {:des "You are in a clearing in a dense forest. To the East is a huge door that is set in a cliff. In the center of the door there is a large keyhole inlaid with copper. To the North you can see a overgrown path.",
 							:con {:w :road2 :e :cave :n :pool}
 							:rinv {}}
 		:pool {:des "You are on the edge of a pool of crystal clear water surrounded by dense forest. To the South, a path leads back to the clearing. To the West you can see a faint light through the trees",
@@ -72,7 +72,7 @@
 		:archive {:des "You are in a small stone room. empty scroll cubbys line the walls and several barren bookshelves are arranged along the walls.",
 							:con {:d :cave_update}
 							:rinv {:journal "a leatherbound journal"}}
-	 	:cave_update {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. The strange markings have begun to glow and you can now faintly make out the letters \"Th  D ng  n.\" A circular trapdoor has opened in the floor.",
+	 	:cave_update {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. The strange markings have begun to glow and you can now faintly make out a few of the letters \"Th  D ng  n.\" A circular trapdoor has opened in the floor.",
 							:con {:w :cave_door, :u :archive, :d :d_entrance}
 							:rinv {}}
 	    :d_entrance {:des "You are at the bottom of a moist stone chute. the surface is too slippery for you to climb up. To the West, a long dim halway extends. You can see a faint light at the end.",
@@ -81,7 +81,7 @@
 		:d_hall {:des "You are in a long dim hallway. It continues on to the East and far along it you can just make out the silhouette of a hulking shape against a bright light.",
 							:con {:w :sphinx, :e :d_entrance}
 							:rinv {}}
-		:sphinx {:des "You are in a dim hallway. In front of you stands a Sphinx. It says \"There are two sisters: one gives birth to the other and she, in turn, gives birth to the first. Who are the two sisters? Answer or face your doom!\" Behind the Sphinx is a blinding light.",
+		:sphinx {:des "You are in a dim hallway. In front of you stands a Sphinx. It says \"There are two sisters: one gives birth to the other and she, in turn, gives birth to the first. Who are the two sisters? Answer the riddle or face your doom!\" Behind the Sphinx is a blinding light.",
 							:con {:w :l_en, :e :d_hall}
 							:rinv {}}
 		:l_en {:des "The blinding light makes it impossible to see.",
@@ -287,7 +287,7 @@
 (defn print-stuff-in-room [inv-type]
 	(let [inv (inv-type (location world))]
 		(if (and (not (nil? inv)) (not (empty? inv)))
-			(println (str "You see: " (get-inventory-descriptions inv)))
+			(println (str "You see:\n" (get-inventory-descriptions inv)))
 			)))
 
 (defn print-items-in-room [] 

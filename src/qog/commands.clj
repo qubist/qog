@@ -136,13 +136,26 @@
 	:helptext "Description: used to light items (like lanterns) with a match\nUsage: light <item>"
 	:fn (fn [p _]
 		(let [item-name (keyword p)]
-			(cond (not (contains? inv item-name)) (println (str "You don't have a " p "."))
+			(cond (= p "") (println "What would you like to light?")
+				  (not (contains? inv item-name)) (println (str "You don't have a " p "."))
 				  (not (contains? inv :match)) (println "You need a match to light things.")
 				  (not (= item-name :lantern)) (println (str "You can't light a " p "."))
 				  true (do (invrm :match)
 						   (invrm item-name)
 						   (invadd :lit_lantern {:des "a lit lantern" :regex #"lit lantern|lit|lantern"})
 						   (println (str "You have lit a " p))))))}
+
+	:dev {
+		:name "dev"
+		:helptext " only"
+		:fn (fn [p _]
+			(let [[command param] (split p #" ")]
+			(cond
+				(= command "goto") (set-location (keyword param))
+				true (println (str "\"" p "\"" " is not a dev command"))
+				))
+			
+			)}
 						
 	:help {
 		:name "help"
@@ -151,10 +164,12 @@
 			(cond
 				(= p "") (println (join "\n" (map (fn [[key val]] (get val :name)) commands)))
 				(= p ".") (println "FIXME")
-				true (println (str p " is not a command"))
+				true (println (str "\"" p "\"" " is not a command"))
 				)
 			)
 			}
+		
+		
 			
 	:quit {
 		:name "quit"
@@ -179,7 +194,7 @@
 	(if (nil? command-key)
 		(println (random-answer 
 					(let [x (str "What is this \"" input "\" of which you speak?")]
-						[x x x (str "What do you mean, \"" input "?\"") (str "I don't know what \"" input "\" means.")]
+						[x x x (str "What do you mean, \"" input "\"?") (str "I don't know what \"" input "\" means.")]
 					)))
 		(let [command (get commands command-key)]
 			((get command :fn) p input)
