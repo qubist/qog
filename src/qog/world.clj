@@ -78,7 +78,7 @@
 	    :d_entrance {:des "You are at the bottom of a moist stone chute. the surface is too slippery for you to climb up. To the West, a long dim halway extends. You can see a faint light at the end.",
 							:con {:w :d_hall}
 							:rinv {}}
-		:d_hall {:des "You are in a long dim hallway. It continues on to the East and far along it you can just make out the silhouette of a hulking shape against a bright light.",
+		:d_hall {:des "You are in a long dim hallway. It continues on to the West and far along it you can just make out the silhouette of a hulking shape against a bright light.",
 							:con {:w :sphinx, :e :d_entrance}
 							:rinv {}}
 		:sphinx {:des "You are in a dim hallway. In front of you stands a Sphinx. It says \"There are two sisters: one gives birth to the other and she, in turn, gives birth to the first. Who are the two sisters? Answer the riddle or face your doom!\" Behind the Sphinx is a blinding light.",
@@ -113,18 +113,18 @@
 							:rinv {}}
 		:mud_room {:des "You are in a large rectangular room. The floor is completely covered with thick, squishy mud, up to your ankles. A door leads to the North.",
 							:con {:e :l_ex, :n :zegg_room}
-							:rinv {}}
+							:rinv {:gray_pebble {:des "a round, gray pebble" :regex #"rock|round|stone|pebble|grey"}}}
 		:zegg_room {:des "You are in a small square room. In the center of the room is a round pedestal. On it sits a beautiful jewel encrusted egg. To the West there is a door",
 							:con {:s :mud_room, :w :pebble_hint}
 							:rinv {:zegg {:des "a jewel encrusted egg" :regex #"jewel|egg|encrusted"}}}
 		:pebble_hint {:des "You are in a small cramped room. Dust covers the floor and walls and there are cobwebs on the ceiling. A ladder leads down.",
 							:con {:e :zegg_room, :d :pit_room}
 							:rinv {:hint_note {:des "a note on a sheaf of yellow paper" :regex #"note|paper|sheaf"}}}
-		:pit_room {:des "You are is a medium sized room. Almost all of the room's floor is taken up by a deep dark whole. Only a small ledge surrounds the pit. A door leads East.",
+		:pit_room {:des "You are is a medium sized room. Almost all of the room's floor is taken up by a deep dark hole. Only a small ledge surrounds the pit. There is a ladder coming down from above, but you cannot reach it. Doors lead East and South.",
 							:con {:e :zegg_pit}
 							:rinv {}}
-		:zegg_pit {:des "You are in a dirty pit. The floor is covered with old bones and refuse. There is no way back up, but there is a door to the North.",
-							:con {:n :pit_room}
+		:zegg_pit {:des "You are in a grimy pit. The floor is covered with old bones and refuse. There is no way back up, but there is a door to the West.",
+							:con {:w :pit_room}
 							:rinv {}}
 
 

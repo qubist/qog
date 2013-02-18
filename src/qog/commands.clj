@@ -94,9 +94,8 @@
 								(do
 									(println "The dog gobbles up the meat and runs off into the bushes")
 									(zap-item-from-world :yard :meat)
-									(rm-obj-from-world :yard :dog))))
-									;FIXME make items fall down the hole
-					)))}
+									(rm-obj-from-world :yard :dog)))
+					))))}
 					
 	:inv {
 		:name "inv"
@@ -124,8 +123,8 @@
 		:helptext "Description: used to read items\nUsage: read <item>"
 		:fn (fn [p _]
 			(let [have-readable (contains? inv :journal)]
-			  (cond (and (= p "journal") have-readable (not(= location :study))) (println "You open the journal to find that age has worn the already faint marks from the page. You can only make out some of the words and letters, the rest are smudged or faded beyond recognition.You read from the last entry:\n\"M y 12, 174 A. .E. \nI f ar that t ey h  e disc     d our    in  plac . T   Ojer n Gem  ald i  ot saf  here. My fa  e  assu es m  that t   ke  is h  den, an   e wil   e s  e. I am n t so   rtain. Tom r  w  e  will relo  te the    eral  t  a s     po  ti  . It will b  v ry dan    us.\nI l  e  n fe r.\nTh y a e comi g.\"")
-					(and (= p "journal") have-readable (= location :study)) (println "The journal emits a green glow from the pages and the letters are reformed by green glowing lines. The passage reads:\n\"May 12, 174 A.C.E. \nI fear that they have discovered our hiding place. The Ojeran Gemerald is not safe here. My fathe  assures me that the key is hidden, and we will be safe. I am not so certain. Tomorrow we  will relocate the Gemerald to a safer position. It will be very dangerous.\nI live in fear.\nThey are coming.\"")
+			  (cond (and (= p "journal") have-readable (not(= location :study))) (println "You open the journal to find that age has worn the already faint marks from the page. You can only make out some of the words and letters, the rest are smudged or faded beyond recognition.You read from the last entry:\n\"M y 12, 174 A. .E. \nI f ar that t ey h  e disc     d our    in  plac . T   Ojer n Gem  ald i  ot saf  here. My fa  e  asu es m  that t   ke  is h  den, an   e wil   e s  e. I am n t so   rtan. Tom r w  e  will relo  te the    eral  t  a s     po  ti  . It will b  v ry dan    us.\nI l  e  n fe r.\nTh y a e comi g.\"")
+					(and (= p "journal") have-readable (= location :study)) (println "The journal emits a green glow from the pages and the letters are reformed by green glowing lines. The passage reads:\n\"May 12, 174 A.C.E. \nI fear that they have discovered our hiding place. The Ojeran Gemerald is not safe here. My father asures me that the key is hidden, and we will be safe. I am not so certan. Tomorow we will relocate the Gemerald to a safer position. It will be very dangerous.\nI live in fear.\nThey are coming.\"")
 					(and (contains? inv :hint_note) (re-find (get (get inv :hint_note) :regex) p)) (println "The paper says:\n \"To open the door, three stones are required.\nNot things of value, just ordinary rocks.\nThe door will open, revealing a key,\nTo help you in your adventures.\"")
 					(= p "") (println "What would you like to read?")
 					(not have-readable) (println "You have nothing to read")
@@ -147,7 +146,7 @@
 
 	:dev {
 		:name "dev"
-		:helptext " only"
+		:helptext "This is definitely NOT an all powerful developer command"
 		:fn (fn [p _]
 			(let [[command param] (split p #" ")]
 			(cond
