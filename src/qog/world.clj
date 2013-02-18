@@ -111,9 +111,23 @@
 		:l_ex {:des "The blinding light makes it impossible to see.",
 							:con {:s :l_4, :w :mud_room}
 							:rinv {}}
-		:mud_room {:des "You are in a large square room. The floor is completely covered with thick, squishy mud, up to your ankles. to the North there is a door.",
-							:con {:e :l_ex,} ;:n :zegg_room} FIXME
+		:mud_room {:des "You are in a large rectangular room. The floor is completely covered with thick, squishy mud, up to your ankles. A door leads to the North.",
+							:con {:e :l_ex, :n :zegg_room}
 							:rinv {}}
+		:zegg_room {:des "You are in a small square room. In the center of the room is a round pedestal. On it sits a beautiful jewel encrusted egg. To the West there is a door",
+							:con {:s :mud_room, :w :pebble_hint}
+							:rinv {:zegg {:des "a jewel encrusted egg" :regex #"jewel|egg|encrusted"}}}
+		:pebble_hint {:des "You are in a small cramped room. Dust covers the floor and walls and there are cobwebs on the ceiling. A ladder leads down.",
+							:con {:e :zegg_room, :d :pit_room}
+							:rinv {:hint_note {:des "a note on a sheaf of yellow paper" :regex #"note|paper|sheaf"}}}
+		:pit_room {:des "You are is a medium sized room. Almost all of the room's floor is taken up by a deep dark whole. Only a small ledge surrounds the pit. A door leads East.",
+							:con {:e :zegg_pit}
+							:rinv {}}
+		:zegg_pit {:des "You are in a dirty pit. The floor is covered with old bones and refuse. There is no way back up, but there is a door to the North.",
+							:con {:n :pit_room}
+							:rinv {}}
+
+
 		}
 	)
 )
