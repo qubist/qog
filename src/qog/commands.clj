@@ -40,9 +40,20 @@
 		(get possible-answers random-number)
 	))
 
+;code for getting items
 (defn do-get-item [item]
 	(take-item-from-world location item)
-  	   (println (str "You now have " (get-item-description item inv) ".")))				
+  	   (println (str "You now have " (get-item-description item inv) ".")))
+
+;finding command keys
+(defn find-command-key [command-str]
+	(some (fn [[key val]] (if (= command-str (get val :name)) key nil)) commands))
+
+;finding command 
+(defn find-command [command-str]
+	(let [command-key (find-command-key command-str)]
+		(if (nil? command-key) nil (get commands command-key))))
+			
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def commands
 	(array-map
@@ -150,12 +161,13 @@
 		:name "help"
 		:helptext "Description: used to display the help menu\nUsage: help"
 		:fn (fn [p _]
+			(let [command (find-command p)]
 			(cond
-				(= p "") (println (join "\n" (map (fn [[key val]] (get val :name)) commands)))
-				(= p ".") (println "FIXME")
+				(= p "") (println (join "\n" (map (fn [[key val]] (get val :name)) (dissoc commands :dev))))
+				(not (= command nil)) (println (get command :helptext))
 				true (println (str "\"" p "\"" " is not a command"))
 				)
-			)
+			))
 			}
 		
 		
@@ -171,6 +183,7 @@
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
 (defn do-commands [input]
 	(let [
 	  input-lower (lower-case input)
@@ -178,15 +191,14 @@
 	  c (first x)
 	  p (join " " (rest x))
 	  room (location world)
-	  command-key (some (fn [[key val]] (if (= c (get val :name)) key nil)) commands)
+	  command (find-command c)
 	]
-	(if (nil? command-key)
+	(if (nil? command)
 		(println (random-answer 
 					(let [x (str "What is this \"" input "\" of which you speak?")]
 						[x x x (str "What do you mean, \"" input "\"?") (str "I don't know what \"" input "\" means.")]
 					)))
-		(let [command (get commands command-key)]
-			((get command :fn) p input)
-		)
+		
+		((get command :fn) p input)
 	)
 ))
