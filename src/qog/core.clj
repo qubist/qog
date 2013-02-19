@@ -22,6 +22,8 @@
 ;loop
 (defn l []
 	(println (:des (location world)))
+		(if (and (= location :study) (contains? inv :journal ))
+			(println "Your journal glows with a green light."))
 	(print-items-in-room)
 	(print "> ")
 	(flush)
@@ -30,10 +32,7 @@
 	)
 )
 
-;(random-answer ["What's % mean?" "You said:%. That means nothing to me. xyzz%."] input)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;code for exiting
 (defn p []

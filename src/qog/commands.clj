@@ -2,59 +2,30 @@
 (use  '[clojure.string :only (lower-case split join)])
 (use 'qog.world)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;illegal moves
 (defn illegal-move? [con]
 	(cond (nil? con) "You can't go that way"
 		(and (= con :yard) (not (contains? inv :lit_lantern))) "It's to dark to go there."
-		(and (= location :cave_door) (= con :cave) (not (contains? inv :copper_key))) "The door to this room is locked with a key that you don't have."
+		(and (= location :cave_door) (= con :cave) (door-closed? :door_to_cave)) "The door is locked."
+		(and (= location :d_room_1) (= con :FIXME) (door-closed? :door_to_FIXME)) "FIXME"
+		(and (= location :clock_room) (= con :silver_key_room) (door-closed? :door_to_silver_key_room)) "FIXME (cond)"
 		(and (= con :outside) (robj-contains? :yard :dog)) "The dog growls and blocks your path"
-		(and (= location :sphinx) (= con :l_en) (riddle-unanswered?)) "The Sphinx says \"Answer the riddle, and then you may pass!\""
+		(and (= location :sphinx) (= con :l_en) (riddle-unanswered? :sphinx)) "The Sphinx says \"Answer the riddle, and then you may pass!\""
+		(and (= location :pword_room) (= con :white_pebble_room) (riddle-unanswered? :pword_room)) "The door is locked"
 		true false))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;location and movement
-(defn move [direction]
-	(let [room (location world)
-		  con ((keyword direction) (:con room))]
-		(let [error (illegal-move? con)]
-			(if error 
-				(println error)
-				(set-location con)
-			)
-		)
-	)
-)
-
-
-
-;random answer
-(defn random-answer [possible-answers]
-	(let [random-number (int (rand (count possible-answers)))]
-		(get possible-answers random-number)
-	))
-
-;code for getting items
-(defn do-get-item [item]
-	(take-item-from-world location item)
-  	   (println (str "You now have " (get-item-description item inv) ".")))
-
-;finding command keys
-(defn find-command-key [command-str]
-	(some (fn [[key val]] (if (= command-str (get val :name)) key nil)) commands))
-
-;finding command 
-(defn find-command [command-str]
-	(let [command-key (find-command-key command-str)]
-		(if (nil? command-key) nil (get commands command-key))))
 			
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;define find-command in order to fix that circular dependency.
+(def find-command)
+;(def set-door-open) ;FIXME
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;all the commands
 (def commands
 	(array-map
 		
@@ -104,17 +75,33 @@
 			(if (empty? inv) (println "You are empty handed.")
 							 (println (str "You have:\n" (get-inventory-descriptions inv) "."))))}
 							
+	:unlock {
+		:name "unlock"
+		:helptext "Description: used to unlock doors with keys or other items\nUsage: unlock <target>"
+		:fn (fn [p _]
+			(if (not (= p "door")) (println "You can't unlock that")
+							 (cond
+								(and (= location :cave_door) (contains? inv :copper_key)) (set-door-open :door_to_cave "The door unlocks smoothly.")
+								
+								(or (= location :cave_door) (= location :clock_room) (= location :d_room_1)) (println "You do not have the correct key.")
+								(not (or (= location :cave_door) (= location :clock_room) (= location :d_room_1))) (println "There is no locked door here.")
+							 )
+							))}
+							
 	:say {
 		:name "say"
 		:helptext "Description: used to talk to in game\nUsage: say <your text here>"
 		:fn (fn [_ input]
 			(cond (= location :sphinx) (if (re-find #"(night|day).+(night|day)" (lower-case input))
 					(do (println "The Sphinx says \"Correct, you may pass!\" Strangely, it then yawns and goes to sleep.")
-						(set-riddle-answered)
+						(set-riddle-answered :sphinx)
 						(change-room-des :sphinx "You are in a dim hallway. In front of you lies a sleeping Sphinx. It is snoring heavily. Behind the Sphinx, the rest of the hallway is hard too see because of a blinding light."))
 					(println "The Sphinx says \"That is not the answer. Try again\""))
-				  
-				  true (println "talking to one's self is a sign of impending mental collapse")
+				(= location :pword_room) (if (re-find #"sir" (lower-case input))
+					(do (println "The room shakes violently and the door slides open.")
+						(set-riddle-answered :pword_room))
+					(println "The room shakes slightly, but the door does not open"))
+				true (println "talking to one's self is a sign of impending mental collapse")
 			))
 		}
 		
@@ -125,7 +112,7 @@
 			(let [have-readable (contains? inv :journal)]
 			  (cond (and (= p "journal") have-readable (not(= location :study))) (println "You open the journal to find that age has worn the already faint marks from the page. You can only make out some of the words and letters, the rest are smudged or faded beyond recognition.You read from the last entry:\n\"M y 12, 174 A. .E. \nI f ar that t ey h  e disc     d our    in  plac . T   Ojer n Gem  ald i  ot saf  here. My fa  e  asu es m  that t   ke  is h  den, an   e wil   e s  e. I am n t so   rtan. Tom r w  e  will relo  te the    eral  t  a s     po  ti  . It will b  v ry dan    us.\nI l  e  n fe r.\nTh y a e comi g.\"")
 					(and (= p "journal") have-readable (= location :study)) (println "The journal emits a green glow from the pages and the letters are reformed by green glowing lines. The passage reads:\n\"May 12, 174 A.C.E. \nI fear that they have discovered our hiding place. The Ojeran Gemerald is not safe here. My father asures me that the key is hidden, and we will be safe. I am not so certan. Tomorow we will relocate the Gemerald to a safer position. It will be very dangerous.\nI live in fear.\nThey are coming.\"")
-					(and (contains? inv :hint_note) (re-find (get (get inv :hint_note) :regex) p)) (println "The paper says:\n \"To open the door, three stones are required.\nNot things of value, just ordinary rocks.\nThe door will open, revealing a key,\nTo help you in your adventures.\"")
+					(and (contains? inv :hint_note) (re-find (get (get inv :hint_note) :regex) p)) (println "The paper says:\n\"To open the door, three stones are required.\nNot things of value, just ordinary rocks.\nThe door will open, revealing a key,\nTo help you go on in your adventures.\"")
 					(= p "") (println "What would you like to read?")
 					(not have-readable) (println "You have nothing to read")
 				))
@@ -162,7 +149,7 @@
 		:fn (fn [p _]
 			(let [command (find-command p)]
 			(cond
-				(= p "") (println (join "\n" (map (fn [[key val]] (get val :name)) (dissoc commands :dev))))
+				(= p "") (println "commands:\n" (join ",\n" (map (fn [[key val]] (get val :name)) (dissoc commands :dev)))) ;FIXME there's and extra space in front of the "n,"
 				(not (= command nil)) (println (get command :helptext))
 				true (println (str "\"" p "\"" " is not a command"))
 				)
@@ -180,8 +167,40 @@
 		
 	)
 )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;location and movement
+(defn move [direction]
+	(let [room (location world)
+		  con ((keyword direction) (:con room))]
+		(let [error (illegal-move? con)]
+			(if error 
+				(println error)
+				(set-location con)
+			))))
+
+;random answer
+(defn random-answer [possible-answers]
+	(let [random-number (int (rand (count possible-answers)))]
+		(get possible-answers random-number)
+	))
+
+;code for getting items
+(defn do-get-item [item]
+	(take-item-from-world location item)
+  	   (println (str "You now have " (get-item-description item inv) ".")))
+
+;finding command keys
+(defn find-command-key [command-str]
+	(some (fn [[key val]] (if (= command-str (get val :name)) key nil)) commands))
+
+;finding command 
+(defn find-command [command-str]
+	(let [command-key (find-command-key command-str)]
+		(if (nil? command-key) nil (get commands command-key))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn do-commands [input]
 	(let [

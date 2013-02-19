@@ -12,7 +12,8 @@
 
 (defn initialize-world []
 	(def not_done true)
-	(def riddle-answered false)
+	(def riddle-answered {:pword_room false, :sphinx false})
+	(def door-open {:door_to_cave false, :door_to_silver_key_room false, :door_to_FIXME false})
 	(def location :starting_chamber)
 	(def world
 
@@ -69,13 +70,13 @@
 		:cave {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. You can see the outlines of strange markings on the walls, but you cannot read them.",
 							:con {:w :cave_door, :u :archive}
 							:rinv {}}
-		:archive {:des "You are in a small stone room. empty scroll cubbys line the walls and several barren bookshelves are arranged along the walls.",
+		:archive {:des "You are in a small stone room. empty scroll cubbies line the walls and several barren bookshelves are arranged along the walls.",
 							:con {:d :cave_update}
-							:rinv {:journal "a leatherbound journal"}}
+							:rinv {:journal "a leather-bound journal"}}
 	 	:cave_update {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. The strange markings have begun to glow and you can now faintly make out a few of the letters \"Th  D ng  n.\" A circular trapdoor has opened in the floor.",
 							:con {:w :cave_door, :u :archive, :d :d_entrance}
 							:rinv {}}
-	    :d_entrance {:des "You are at the bottom of a moist stone chute. the surface is too slippery for you to climb up. To the West, a long dim halway extends. You can see a faint light at the end.",
+	    :d_entrance {:des "You are at the bottom of a moist stone chute. the surface is too slippery for you to climb up. To the West, a long dim hallway extends. You can see a faint light at the end.",
 							:con {:w :d_hall}
 							:rinv {}}
 		:d_hall {:des "You are in a long dim hallway. It continues on to the West and far along it you can just make out the silhouette of a hulking shape against a bright light.",
@@ -116,18 +117,37 @@
 							:rinv {:gray_pebble {:des "a round, gray pebble" :regex #"rock|round|stone|pebble|grey"}}}
 		:zegg_room {:des "You are in a small square room. In the center of the room is a round pedestal. On it sits a beautiful jewel encrusted egg. To the West there is a door",
 							:con {:s :mud_room, :w :pebble_hint}
-							:rinv {:zegg {:des "a jewel encrusted egg" :regex #"jewel|egg|encrusted"}}}
+							:rinv {:zegg {:des "a jewel-encrusted egg" :regex #"jewel|egg|encrusted"}}}
 		:pebble_hint {:des "You are in a small cramped room. Dust covers the floor and walls and there are cobwebs on the ceiling. A ladder leads down.",
 							:con {:e :zegg_room, :d :pit_room}
 							:rinv {:hint_note {:des "a note on a sheaf of yellow paper" :regex #"note|paper|sheaf"}}}
-		:pit_room {:des "You are is a medium sized room. Almost all of the room's floor is taken up by a deep dark hole. Only a small ledge surrounds the pit. There is a ladder coming down from above, but you cannot reach it. Doors lead East and South.",
-							:con {:e :zegg_pit}
+		:pit_room {:des "You are in a medium sized room. Almost all of the room's floor is taken up by a deep dark hole. Only a small ledge surrounds the pit. There is a ladder coming down from above, but you cannot reach it. Doors lead East and South.",
+							:con {:e :zegg_pit, :s :study}
 							:rinv {}}
 		:zegg_pit {:des "You are in a grimy pit. The floor is covered with old bones and refuse. There is no way back up, but there is a door to the West.",
 							:con {:w :pit_room}
 							:rinv {}}
-
-
+		:study {:des "You are in a large study with walls, floor and ceiling made of wooden paneling. There is a desk and a chair, and a mural of a hearty adventurer holding a solid silver rock in a dark dungeon covers the east wall. A door leads to the West.",
+							:con {:n :pit_room, :w :clock_room}
+							:rinv {}}
+		:clock_room {:des "You are in a round, rough-walled room. You can hear a loud \"tic, tock, tic, tock...\" sound from around you. To the North, there is a thick stone door with no handle or keyhole. Instead, it has three round holes that go into the door. To the West there is a doorway into another room.",
+							:con {:n :silver_key_room, :w :d_room_1, :e :study}
+							:rinv {}}
+		:silver_key_room {:des "You are in a small cavern-like room. A small stream runs through center of the space, making a quiet trickling noise.",
+							:con {:s :clock_room}
+							:rinv {:silver_key {:des "a small silver key" :regex #"silver|key|small" }}}
+		:d_room_1 {:des "You are in a medium sized, nondescript, rectangular room. There is a large ironbound, oaken door to the West. It has a small silver keyhole in it. A hallway leads to the North.",
+							:con {:e :clock_room, :n :pword_hall, :w :FIXME}
+							:rinv {}}
+		:pword_hall {:des "You are in a short hallway that leads North and South.",
+							:con {:s :d_room_1, :n :pword_room}
+							:rinv {}}
+		:pword_room {:des "You are in a long, thin room. At the North end of the room, there is a square stone door. On the East wall, an inscription is written:\n\"say the password\neht lanruoj sdloh eht yek\"",
+							:con {:s :pword_hall, :n :white_pebble_room}
+							:rinv {}}
+		:white_pebble_room {:des "You are in a safe-room. Empty vaults line the walls and a small metal chandelier hangs from the ceiling, it's candles have long been un-lit.",
+							:con {:s :pword_room}
+							:rinv {:silver_key {:des "a small silver key" :regex #"silver|key|small"}}}
 		}
 	)
 )
@@ -135,14 +155,12 @@
 (defn set-location [con]
 	(def location con))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-item-description [item inventory]
 	(let [inv-val (get inventory item)]
 		(if (string? inv-val) inv-val (get inv-val :des))
 	))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -170,6 +188,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;"general inv contains" check
 (defn inv-contains? [room-name item inv-type]
 	(let [room (get world room-name)
 		  inv (get room inv-type)]
@@ -183,9 +202,7 @@
 (defn robj-contains? [room-name item]
 	(inv-contains? room-name item :robj))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;inv
 (defn invadd [item item-text]
@@ -194,7 +211,6 @@
 	(def inv (dissoc inv item)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;remove item from room
 (defn rm-inv-from-room [room item-name inv-type]
@@ -214,9 +230,7 @@
 	(rm-inv-from-room room item-name :robj)
 	)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;add item to room
 (defn add-item-to-room [room item-name item-text]
@@ -226,14 +240,11 @@
 		(assoc room-sin-inv :rinv new-inv))
 	)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;update world
 (defn update-world [room-name room]
 	(def world (assoc world room-name room)))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -270,7 +281,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
 ;add item to world from your inventory
 (defn add-item-to-world [room-name item-name]
 	(let [old-room (get world room-name)
@@ -279,22 +289,26 @@
 		(invrm item-name)
 		(update-world room-name new-room)))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;riddles
-(defn riddle-unanswered? []
-	(not riddle-answered))
+(defn riddle-unanswered? [room-name]
+	(not (get riddle-answered room-name)))
 
-(defn set-riddle-answered []
-	(def riddle-answered true)
-;	(set-description :sphinx "You are in a dim hallway. In front of you lies a sleeping Sphinx. Behind the Sphinx is a blinding light.")
-	)
+(defn set-riddle-answered [room-name]
+	(def riddle-answered (assoc riddle-answered room-name true)
+	))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;door locks
+(defn door-closed? [door-name]
+	(not (get door-open door-name)))
 
+(defn set-door-open [door-name text]
+	(def door-open (assoc door-open door-name true))
+	(if (not (nil? text))(println text))
+	)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;room printing
@@ -309,6 +323,8 @@
 	(print-stuff-in-room :robj)
 	)			
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;defining not done (for quitting)
 (defn set-not-done [v]
 	(def not_done v))
