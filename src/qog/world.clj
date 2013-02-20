@@ -114,7 +114,7 @@
 							:rinv {}}
 		:mud_room {:des "You are in a large rectangular room. The floor is completely covered with thick, squishy mud, up to your ankles. A door leads to the North.",
 							:con {:e :l_ex, :n :zegg_room}
-							:rinv {:gray_pebble {:des "a round, gray pebble" :regex #"rock|round|stone|pebble|grey"}}}
+							:rinv {:gray_pebble {:des "a round, gray pebble" :regex #"rock|round|stone|pebble|gray"}}}
 		:zegg_room {:des "You are in a small square room. In the center of the room is a round pedestal. On it sits a beautiful jewel encrusted egg. To the West there is a door",
 							:con {:s :mud_room, :w :pebble_hint}
 							:rinv {:zegg {:des "a jewel-encrusted egg" :regex #"jewel|egg|encrusted"}}}
@@ -133,7 +133,7 @@
 		:clock_room {:des "You are in a round, rough-walled room. You can hear a loud \"tic, tock, tic, tock...\" sound from around you. To the North, there is a thick stone door with no handle or keyhole. Instead, it has three round holes that go into the door. To the West there is a doorway into another room.",
 							:con {:n :silver_key_room, :w :d_room_1, :e :study}
 							:rinv {}}
-		:silver_key_room {:des "You are in a small cavern-like room. A small stream runs through center of the space, making a quiet trickling noise.",
+		:silver_key_room {:des "You are in a safe-room. Empty vaults line the walls and a small metal chandelier hangs from the ceiling, it's candles have long been un-lit.",
 							:con {:s :clock_room}
 							:rinv {:silver_key {:des "a small silver key" :regex #"silver|key|small" }}}
 		:d_room_1 {:des "You are in a medium sized, nondescript, rectangular room. There is a large ironbound, oaken door to the West. It has a small silver keyhole in it. A hallway leads to the North.",
@@ -145,9 +145,9 @@
 		:pword_room {:des "You are in a long, thin room. At the North end of the room, there is a square stone door. On the East wall, an inscription is written:\n\"say the password\neht lanruoj sdloh eht yek\"",
 							:con {:s :pword_hall, :n :white_pebble_room}
 							:rinv {}}
-		:white_pebble_room {:des "You are in a safe-room. Empty vaults line the walls and a small metal chandelier hangs from the ceiling, it's candles have long been un-lit.",
+		:white_pebble_room {:des "You are in a small cavern-like room. A small stream runs through center of the space, making a quiet trickling noise.",
 							:con {:s :pword_room}
-							:rinv {:silver_key {:des "a small silver key" :regex #"silver|key|small"}}}
+							:rinv {:white_pebble {:des "a round, white pebble" :regex #"rock|round|stone|pebble|white"}}}
 		}
 	)
 )
@@ -263,16 +263,12 @@
 		(invadd item item-text)
 		(update-world room-name new-room)))
 
-;completely delete and item from the world
+;completely delete an item from the world
 (defn zap-item-from-world [room-name item]
 	(let [old-room (get world room-name)
 	 	  [new-room item-text] (rm-item-from-room old-room item)]
 		(update-world room-name new-room)))
 		
-;		  item-room-and-text (rm-item-from-room old-room item)
-;		  new-room (first item-room-and-text)
-;		  item-text (second item-room-and-text)
-
 ;remove obj from world
 (defn rm-obj-from-world [room-name item]
 	(let [old-room (get world room-name)
