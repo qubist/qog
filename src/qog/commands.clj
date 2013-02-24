@@ -61,16 +61,28 @@
 						(println (str "You don't have a " item-str"."))
 						(do 
 							(println (str "You put down " (get-item-description item inv) "."))
-							(add-item-to-world location item)
+							(give-item-to-world location item)
 							(if (and (= location :yard ) (= item :meat))
 								(do
 									(println "The dog gobbles up the meat and runs off into the bushes")
 									(zap-item-from-world :yard :meat)
 									(rm-obj-from-world :yard :dog)))
+							(if (= location :mineshaft_mid)
+								(do
+									(println "The object slips from your hand and falls down into the mineshaft. You here a echo come up the mineshaft as the item hits the bottom.")
+									(move-item :mineshaft_mid :mineshaft_bottom item)))
+							(if (= location :mineshaft_overlook)
+								(do
+									(println "The object slips from your hand and falls down, out of sight.")
+									(zap-item-from-world :mineshaft_overlook item)))
 							(if (= location :pit_room )
 								(do
 									(println "The object slips from your hand and tumbles into the black abyss below you.")
 									(zap-item-from-world :pit_room item)))
+							(if (= location :tree )
+								(do
+									(println "The object slips from your hand and tumbles down into the grass below the tree.")
+									(move-item :tree :outside item)))
 					))))}
 					
 	:inv {

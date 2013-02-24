@@ -298,13 +298,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;add item to world from your inventory
-(defn add-item-to-world [room-name item-name]
+;give item to world from your inventory
+(defn give-item-to-world [room-name item-name]
 	(let [old-room (get world room-name)
 		  item-text (get inv item-name)
 	 	  new-room (add-item-to-room old-room item-name item-text)]
 		(invrm item-name)
 		(update-world room-name new-room)))
+
+;move items from rooms into other rooms
+(defn move-item [src-room-name dest-room-name item-name]
+	(let [src-room (get world src-room-name)
+		  dest-room (get world dest-room-name)
+		  [new-src-room item-text] (rm-item-from-room src-room item-name)
+	 	  new-dest-room (add-item-to-room dest-room item-name item-text)]
+	(update-world src-room-name new-src-room)
+	(update-world dest-room-name new-dest-room)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
