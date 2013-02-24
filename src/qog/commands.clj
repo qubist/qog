@@ -66,6 +66,10 @@
 									(println "The dog gobbles up the meat and runs off into the bushes")
 									(zap-item-from-world :yard :meat)
 									(rm-obj-from-world :yard :dog)))
+							(if (= location :pit_room )
+								(do
+									(println "The object slips from your hand and tumbles into the black abyss below you.")
+									(zap-item-from-world :pit_room item)))
 					))))}
 					
 	:inv {
