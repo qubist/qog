@@ -67,16 +67,16 @@
 		:forest {:des "You managed to bushwhack your way through the forest and you come to a small clearing.",
 							:con {:e :pool}
 							:rinv {:black_pebble {:des "a round, black pebble" :regex #"rock|round|stone|pebble|black"}}}						
-		:cave {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. You can see the outlines of strange markings on the walls, but you cannot read them.",
+		:cave {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. You can see the outlines of strange markings on the walls.",
 							:con {:w :cave_door, :u :archive}
 							:rinv {}}
-		:archive {:des "You are in a small stone room. empty scroll cubbies line the walls and several barren bookshelves are arranged along the walls.",
+		:archive {:des "You are in a small stone room. Empty scroll cubbies line the walls and several barren bookshelves are arranged along the walls.",
 							:con {:d :cave_update}
 							:rinv {:journal "a leather-bound journal"}}
 	 	:cave_update {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. The strange markings have begun to glow and you can now faintly make out a few of the letters \"Th  D ng  n.\" A circular trapdoor has opened in the floor.",
 							:con {:w :cave_door, :u :archive, :d :d_entrance}
 							:rinv {}}
-	    :d_entrance {:des "You are at the bottom of a moist stone chute. the surface is too slippery for you to climb up. To the West, a long dim hallway extends. You can see a faint light at the end.",
+	    :d_entrance {:des "You are at the bottom of a moist stone chute. The surface is too slippery for you to climb up. To the West, a long dim hallway extends. You can see a faint light at the end.",
 							:con {:w :d_hall}
 							:rinv {}}
 		:d_hall {:des "You are in a long dim hallway. It continues on to the West and far along it you can just make out the silhouette of a hulking shape against a bright light.",

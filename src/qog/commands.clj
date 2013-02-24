@@ -7,7 +7,7 @@
 ;illegal moves
 (defn illegal-move? [con]
 	(cond (nil? con) "You can't go that way"
-		(and (= con :yard) (not (contains? inv :lit_lantern))) "It's to dark to go there."
+		(and (= con :yard) (not (contains? inv :lit_lantern))) "It's too dark to go there."
 		(and (= location :cave_door) (= con :cave) (door-closed? :door_to_cave)) "The door is locked."
 		(and (= location :d_room_1) (= con :FIXME) (door-closed? :door_to_FIXME)) "FIXME"
 		(and (= location :clock_room) (= con :silver_key_room) (door-closed? :door_to_silver_key_room)) "The door is locked"
@@ -25,7 +25,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;all the commands
+;commands
 (def commands
 	(array-map
 		
