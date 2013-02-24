@@ -9,7 +9,7 @@
 	(cond (nil? con) "You can't go that way"
 		(and (= con :yard) (not (contains? inv :lit_lantern))) "It's too dark to go there."
 		(and (= location :cave_door) (= con :cave) (door-closed? :door_to_cave)) "The door is locked."
-		(and (= location :d_room_1) (= con :FIXME) (door-closed? :door_to_FIXME)) "FIXME"
+		(and (= location :d_room_1) (= con :crossroads) (door-closed? :door_to_crossroads)) "The door is locked."
 		(and (= location :clock_room) (= con :silver_key_room) (door-closed? :door_to_silver_key_room)) "The door is locked"
 		(and (= con :outside) (robj-contains? :yard :dog)) "The dog growls and blocks your path"
 		(and (= location :sphinx) (= con :l_en) (riddle-unanswered? :sphinx)) "The Sphinx says \"Answer the riddle, and then you may pass!\""
@@ -20,8 +20,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;define find-command in order to fix that circular dependency.
-(def find-command)
-;(def set-door-open) ;FIXME
+(declare find-command)
+(declare move)
+(declare do-get-item)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -87,7 +88,7 @@
 							 (cond
 								(and (= location :cave_door) (contains? inv :copper_key)) (set-door-open :door_to_cave "The door unlocks with a click.")
 								(and (= location :clock_room) (contains? inv (and :black_pebble :gray_pebble :white_pebble))) (do (set-door-open :door_to_silver_key_room "The pebbles roll smoothly down into the depths of the door, and it swings open.") (invrm :black_pebble) (invrm :gray_pebble) (invrm :white_pebble))
-								(and (= location :d_room_1) (contains? inv :silver_key)) (set-door-open :door_to_FIXME "The door unlocks smoothly.")
+								(and (= location :d_room_1) (contains? inv :silver_key)) (set-door-open :door_to_crossroads "The door unlocks smoothly.")
 								(or (= location :cave_door) (= location :d_room_1)) (println "You do not have the correct key.")
 								(= location :clock_room) (println "You do not have the correct items.")
 								(not (or (= location :cave_door) (= location :clock_room) (= location :d_room_1))) (println "There is no locked door here.")

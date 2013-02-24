@@ -13,11 +13,11 @@
 (defn initialize-world []
 	(def not_done true)
 	(def riddle-answered {:pword_room false, :sphinx false})
-	(def door-open {:door_to_cave false, :door_to_silver_key_room false, :door_to_FIXME false})
+	(def door-open {:door_to_cave false, :door_to_silver_key_room false, :door_to_crossroads false})
 	(def location :starting_chamber)
 	(def world
 
-;rooms
+;room
 		{:starting_chamber {:des "You are in a small, bare room with an empty chest in the corner. There are doors heading in all four directions.", 
 							:con {:n :kitchen, :s :yard, :e :bedroom, :w :cellar_stairs}
 							:rinv {}}
@@ -137,7 +137,7 @@
 							:con {:s :clock_room}
 							:rinv {:silver_key {:des "a small silver key" :regex #"silver|key|small" }}}
 		:d_room_1 {:des "You are in a medium sized, nondescript, rectangular room. There is a large ironbound, oaken door to the West. It has a small silver keyhole in it. A hallway leads to the North.",
-							:con {:e :clock_room, :n :pword_hall, :w :FIXME}
+							:con {:e :clock_room, :n :pword_hall, :w :crossroads}
 							:rinv {}}
 		:pword_hall {:des "You are in a short hallway that leads North and South.",
 							:con {:s :d_room_1, :n :pword_room}
@@ -148,6 +148,27 @@
 		:white_pebble_room {:des "You are in a small cavern-like room. A small stream runs through center of the space, making a quiet trickling noise.",
 							:con {:s :pword_room}
 							:rinv {:white_pebble {:des "a round, white pebble" :regex #"rock|round|stone|pebble|white"}}}
+		:crossroads {:des "You are in a passageway that splits off. One way leads North and one way South. A passage also goes back to the East.",
+							:con {:e :d_room_1, :n :bee_room, :s :mineshaft_top}
+							:rinv {}}
+		:mineshaft_top {:des "You are at the top of a large, vertical mineshaft. It goes strait down into the earth as far as you can see. A metal ladder leads down the side of the mineshaft. To the east, there is an old elevator cage suspended to the ceiling by rusty metal cables.",
+							:con {:e :mineshaft_elevator, :d :mineshaft_mid, :n :crossroads}
+							:rinv {}}
+		:mineshaft_elevator {:des "You are inside a unsteady, rusted elevator cage. Above you there is a system of pulleys and cables that suspend the elevator from the ceiling. There is no obvious way to control the elevator, and if there was it would likely not work.",
+							:con {:w :mineshaft_top}
+							:rinv {}}
+		:mineshaft_mid {:des "You are on a small metal platform on the South side of a mineshaft. A metal ladder leads down through a circular hole in the platform, and back up the mineshaft. A thin catwalk stretches North, and into a tunnel across from the metal platform.",
+							:con {:u :mineshaft_top, :d :mineshaft_bottom, :n :mineshaft_overlook}
+							:rinv {}}
+		:mineshaft_bottom {:des "You are at the bottom of a very tall mineshaft. A metal ladder leads up, and there is a room to the South",
+							:con {:u :mineshaft_mid, :s :mine_room_1}
+							:rinv {}}
+		:mineshaft_overlook {:des "",
+							:con {:s :mineshaft_mid}
+							:rinv {}}
+		:mine_room_1 {:des "",
+							:con {:n :mineshaft_bottom}
+							:rinv {:gold_bar {:des "a shiny golden bar" :regex #"gold|bar|golden|shiny"}}}
 		}
 	)
 )
