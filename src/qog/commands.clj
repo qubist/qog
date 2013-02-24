@@ -155,7 +155,7 @@
 		:fn (fn [p _]
 			(let [command (find-command p)]
 			(cond
-				(= p "") (println "commands:\n" (join ",\n" (map (fn [[key val]] (get val :name)) (dissoc commands :dev)))) ;FIXME there's and extra space in front of the "n,"
+				(= p "") (println (str "commands:\n" (join "\n" (map (fn [[key val]] (get val :name)) (dissoc commands :dev)))))
 				(not (= command nil)) (println (get command :helptext))
 				true (println (str "\"" p "\"" " is not a command"))
 				)
