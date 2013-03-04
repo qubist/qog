@@ -14,12 +14,13 @@
 		(and (= con :outside) (robj-contains? :yard :dog)) "The dog growls and blocks your path"
 		(and (= location :sphinx) (= con :l_en) (riddle-unanswered? :sphinx)) "The Sphinx says \"Answer the riddle, and then you may pass!\""
 		(and (= location :pword_room) (= con :white_pebble_room) (riddle-unanswered? :pword_room)) "The door is locked"
+		(and (= location :mine_room_1) (= con :lyre_room)) (do (set-location :mineshaft_bottom) (if (contains? inv :zegg) (do (invrm :zegg) "As you walk into the room, you get hit by something very heavy. When you wake up, you have a grape sized lump on your head and you feel like you are missing something...") "As you walk into the room, you get hit by something very heavy. When you wake up, you have a grape sized lump on your head."))  
 		true false))
 
 			
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;define find-command in order to fix that circular dependency.
+;declare functions in order to fix circular dependencys.
 (declare find-command)
 (declare move)
 (declare do-get-item)
@@ -96,14 +97,15 @@
 		:name "unlock"
 		:helptext "Description: used to unlock doors with keys or other items\nUsage: unlock <target>"
 		:fn (fn [p _]
-			(if (not (= p "door")) (println "You can't unlock that")
+			(if (not (or (= p "elevator") (= p "door") (= p "lock"))) (println "You can't unlock that")
 							 (cond
 								(and (= location :cave_door) (contains? inv :copper_key)) (set-door-open :door_to_cave "The door unlocks with a click.")
-								(and (= location :clock_room) (contains? inv (and :black_pebble :gray_pebble :white_pebble))) (do (set-door-open :door_to_silver_key_room "The pebbles roll smoothly down into the depths of the door, and it swings open.") (invrm :black_pebble) (invrm :gray_pebble) (invrm :white_pebble))
+								(and (= location :clock_room) (contains? inv (and :black_pebble :gray_pebble :white_pebble))) (do (set-door-open :door_to_silver_key_room "The pebbles fly out of your hand into the holes, and roll smoothly down into the depths of the door. The door swings open.") (invrm :black_pebble) (invrm :gray_pebble) (invrm :white_pebble))
 								(and (= location :d_room_1) (contains? inv :silver_key)) (set-door-open :door_to_crossroads "The door unlocks smoothly.")
-								(or (= location :cave_door) (= location :d_room_1)) (println "You do not have the correct key.")
+								(and (= location :mineshaft_elevator) (contains? inv :ruby_key)) (do (println "As you turn the key in the lock, the cables supporting the elevator cage snap and you start to plummet down to the bottom of the elevator shaft. Just when you think that you are about to hit the bottom and be turned into a adventurer pancake breakfast for the nearest monster, there is a blinding flash of red light, and you feel yourself being teleported.") (set-location :outside_elevator))
+								(or (= location :cave_door) (= location :mineshaft_elevator) (= location :d_room_1)) (println "You do not have the correct key.")
 								(= location :clock_room) (println "You do not have the correct items.")
-								(not (or (= location :cave_door) (= location :clock_room) (= location :d_room_1))) (println "There is no locked door here.")
+								(not (or (= location :cave_door) (= location :mineshaft_elevator) (= location :clock_room) (= location :d_room_1))) (println "There is no locked door here.")
 							 )
 							))}
 							
