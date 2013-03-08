@@ -25,6 +25,7 @@
 		(if (and (= location :study) (contains? inv :journal ))
 			(println "Your journal glows with a green light."))
 	(print-items-in-room)
+	(println "")
 	(print "> ")
 	(flush)
 	(let [input (read-line)]
