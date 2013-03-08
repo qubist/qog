@@ -44,7 +44,8 @@
 	   	:fn (fn [item-str input] 
 			(let [room (location world)
 				  item (search-rinv item-str room)]
-				(cond (nil? item) (println (str "You can't do that."))
+				(cond (nil? item) (println "You can't do that.")
+					  (= item :_unclear_) (println (str "Which " item-str "? Please be more specific."))
 					  (and (= location :zegg_room) (= item :zegg)) (do 
 																   (do-get-item item)
 																   (println "The floor opens up from under you and you fall into a pit!")

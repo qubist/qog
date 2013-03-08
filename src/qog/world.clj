@@ -204,8 +204,20 @@
 
 (defn search-any-inv [item-str inventory]
 	(let [inv-patterns (get-inventory-patterns inventory) 
-		  found-item (some (fn [[item pattern]] (if (re-find pattern item-str) item nil)) inv-patterns)]
-	 (if (nil? found-item) nil (keyword found-item))))
+		  found-items (sort-by (fn [[_ s]] (- (count s)))  (map (fn [[item pattern]] [item (re-find pattern item-str)]) inv-patterns))
+		  num-items (count found-items)]
+	 (cond (= num-items 1) (first (first found-items))
+		   (> num-items 1) (let [[first-item first-match] (first found-items)
+								 [second-item second-match] (second found-items)]
+								(if (not (= (count first-match) (count second-match)))
+									first-item
+									:_unclear_
+									)
+								)
+			
+		
+		   true nil
+		)))
 
 (defn search-rinv [item-str room]
 	(search-any-inv item-str (get room :rinv)))
