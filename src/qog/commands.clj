@@ -19,6 +19,7 @@
 		(and (= location :crystal_room) (= con :overlook_ladder) (door-closed? :door_to_overlook_ladder)) "You can't go that way."
 		(and (= con :mineshaft_overlook_2) (= location :overlook_ladder)) (do (set-location :mineshaft_overlook_2) "As you start to climb the ladder, a swift wind shoots you up the tube and out into a cavern filled with mining instruments. You land on a metal platform.")
 		(and (= location :cath_stransc) (= con :cath_crypt_web) (door-closed? :door_to_cath_crypt_web)) "The trapdoor is locked."
+		(and (= con :flooded_room_1) (= location :mine_room_1)) (do (set-location :flooded_room_1) "You fall through the hole and into shallow water.")
 		true false))
 
 			
@@ -95,7 +96,9 @@
 											(zap-item-from-world :crystal_room :crystal)
 											(set-door-open :door_to_overlook_ladder "A doorway opens in the stone of the North wall of the room.")
 											(change-room-des :crystal_room "You find yourself in a large square room. A strange contraption stands in the center of the room. It has wires and tubes all running into the walls away from a glowing, crimson crystal about the size of your fist. Red light is being drawn from the crystal, through the wires and tubes, and into the walls. A hallway leads East, and there is a doorway to the North.")
-											(change-room-des :mineshaft_overlook "You are on a long viewing area looking over a massive cavern filled with a complex of chutes, minecart tracks, and metal catwalks. A few minecarts, piled with gold ore, zip along a track, powered by a red glow that seems to pull them along. Machines ar chugging, engines whirring and the far off sound of pickaxes can be heard. The viewing are continues to the East, and there is a tunnel to the South.")))
+											(change-room-des :mineshaft_overlook "You are on a long viewing area looking over a massive cavern filled with a complex of chutes, minecart tracks, and metal catwalks. A few minecarts, piled with gold ore, zip along a track, powered by a red glow that seems to pull them along. Machines are chugging, engines whirring and the far off sound of pickaxes can be heard. The viewing are continues to the East, and there is a tunnel to the South.")))
+											(change-room-des :mineshaft_elevator "You are inside a unsteady, rusted elevator cage. Above you there is a system of pulleys and cables that suspend the elevator from the ceiling. There is no obvious way to control the elevator, except a tiny, red keyhole with the words \"In case of emergency\" enscribed below it. The kehole is glowing with a red light. There is an exit to the West.")))
+
 					))))}
 					
 	:inv {
