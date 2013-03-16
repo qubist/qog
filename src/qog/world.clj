@@ -61,7 +61,7 @@
 		:cave_door {:des "You are in a clearing in a dense forest. To the East is a huge door that is set in a cliff. In the center of the door there is a large keyhole inlaid with copper. To the North you can see a overgrown path.",
 							:con {:w :road2 :e :cave :n :pool}
 							:rinv {}}
-		:pool {:des "You are on the edge of a pool of crystal clear water surrounded by dense forest. To the South, a path leads back to the clearing. To the West you can see a faint light through the trees",
+		:pool {:des "You are on the edge of a pool of crystal-clear water surrounded by dense forest. To the South, a path leads back to the clearing. To the West you can see a faint light through the trees",
 							:con {:s :cave_door, :w :forest}
 							:rinv {:water_bottle {:des "a glass bottle containing a quantity of water" :regex #"water|bottle|glass"}}}
 		:forest {:des "You find yourself in a small clearing surrounded by a dense forest.",
@@ -154,7 +154,7 @@
 		:mineshaft_top {:des "You are at the top of a large, vertical mineshaft. It goes strait down into the earth as far as you can see. A metal ladder leads down the side of the mineshaft. To the East, there is an old elevator cage suspended to the ceiling by rusty metal cables. The passageway leads back to the North",
 							:con {:e :mineshaft_elevator, :d :mineshaft_mid, :n :crossroads}
 							:rinv {}}
-		:mineshaft_elevator {:des "You are inside a unsteady, rusted elevator cage. Above you there is a system of pulleys and cables that suspend the elevator from the ceiling. There is no obvious way to control the elevator, except a tiny, red keyhole with the words \"In case of emergency\" enscribed below it. There is an exit to the West.",
+		:mineshaft_elevator {:des "You are inside a unsteady, rusted elevator cage. Above you there is a system of pulleys and cables that suspend the elevator from the ceiling. There is no obvious way to control the elevator, except a tiny, red keyhole with the words \"In case of emergency\" inscribed below it. There is an exit to the West.",
 							:con {:w :mineshaft_top}
 							:rinv {}}
 		:mineshaft_mid {:des "You are on a small metal platform on the South side of a mineshaft. A metal ladder leads down through a circular hole in the platform, and back up the mineshaft. A thin catwalk stretches North, and into a tunnel across from the metal platform.",
@@ -163,7 +163,7 @@
 		:mineshaft_bottom {:des "You are at the bottom of a very tall mineshaft. A metal ladder leads up, and there is a room to the South",
 							:con {:u :mineshaft_mid, :s :mine_room_1}
 							:rinv {}}
-		:mineshaft_overlook {:des "You are on a long viewing area looking over a massive cavern filled with a complex of chutes, minecart tracks, and metal catwalks. A few minecarts, piled with gold ore, are sitting motionless on their tracks. The viewing are continues to the East, and there is a tunnel to the South.",
+		:mineshaft_overlook {:des "You are on a long viewing area looking over a massive cavern filled with a complex of chutes, mine-cart tracks, and metal catwalks. A few mine-carts, piled with gold ore, are sitting motionless on their tracks. The viewing are continues to the East, and there is a tunnel to the South.",
 							:con {:s :mineshaft_mid, :e :mineshaft_overlook_2}
 							:rinv {}}
 		:mineshaft_overlook_2 {:des "You are at the East end of a long viewing area looking over a huge mining district in a cavern. To the West, is the rest of the viewing platform.",
@@ -172,7 +172,7 @@
 		:mine_room_1 {:des "You are in a medium sized, well lit room. A doorway leads East, and you can hear beautiful singing and lyre music from this direction. There is a hole in the floor that leads down into the dark.",
 							:con {:n :mineshaft_bottom, :e :lyre_room, :d :flooded_room_1}
 							:rinv {:gold_bar {:des "a shiny gold bar" :regex #"shiny gold bar|gold bar|gold|bar"}}}
-		:lyre_room {:des "I am typing words right now on a keybord and they are green.",
+		:lyre_room {:des "I am typing words right now on a keyboard and they are green.",
 							:con {:w :mine_room_1}
 							:rinv {}}
 		:flooded_room_1 {:des "You are in a large room that is filled with water up to your knees. A doorway leads to the West and there is a hole in the ceiling, but no way to reach it.",
@@ -232,22 +232,22 @@
 		:cath_nave {:des "You are in the nave (large part where the people sit; who taught you history?) of a very small cathedral. So small, in fact, that your head almost touches the ceiling. The exit lies to the West, and to the East is a very small altar that stands in the center of the cathedral.",
 							:con {:w :cath_courtyard, :e :cath_altar}
 							:rinv {}}
-		:cath_altar {:des "You are at the very small altar in the center of a very small cathedral. So small, in fact, that you have to stoop slightly, and cannot stand up strait for fear of breaking the roof of the cathedral. To the West there is the nave of the cathedral, to the East, the choir, and to the North and South, the transcepts.",
+		:cath_altar {:des "You are at the very small altar in the center of a very small cathedral. So small, in fact, that you have to stoop slightly, and cannot stand up strait for fear of breaking the roof of the cathedral. To the West there is the nave of the cathedral, to the East, the choir, and to the North and South, the transepts.",
 							:con {:w :cath_nave, :n :cath_ntransc, :s :cath_stransc, :e :cath_choir}
 							:rinv {}}
-		:cath_choir {:des "You are in the very small choir (the part behind the altar where the relics are; who taught you history?) of a very small cathedral. There are five round chapels (small areas where the relics are kept; who taught you history?) here, but sadly, they are all empty, the relics probably having been stolen by some band of theives long ago. The altar lies to the West",
+		:cath_choir {:des "You are in the very small choir (the part behind the altar where the relics are; who taught you history?) of a very small cathedral. There are five round chapels (small areas where the relics are kept; who taught you history?) here, but sadly, they are all empty, the relics probably having been stolen by some band of thieves long ago. The altar lies to the West",
 							:con {:w :cath_altar}
 							:rinv {}}
-		:cath_ntransc {:des "You are in the North part of a very small transcept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a tiny cathedral. There is a huge and magnificent stained glass window on the wall that is to the North. A metal plaque on the wall says: \"Drim gniraelc nus yek\" The altar lies to the South.",
+		:cath_ntransc {:des "You are in the North part of a very small transept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a tiny cathedral. There is a huge and magnificent stained glass window on the wall that is to the North. A metal plaque on the wall says: \"Drim gniraelc nus yek\" The altar lies to the South.",
 							:con {:s :cath_altar}
 							:rinv {}}
-		:cath_stransc {:des "You are in the South part of a tiny transcept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a very small cathedral. There is a large, oaken, ironbound trapdoor on the floor. The altar lies to the North.",
+		:cath_stransc {:des "You are in the South part of a tiny transept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a very small cathedral. There is a large, oaken, ironbound trapdoor on the floor. The altar lies to the North.",
 							:con {:n :cath_altar, :d :cath_crypt_web}
 							:rinv {}}
 		:cath_crypt_web {:des "You are in an underground tunnel that leads South. It is completely filled with spider webs. A ladder leads up and out of the tunnel.",
 							:con {:u :cath_stransc, :s :cath_crypt_main}
 							:rinv {}}
-		:cath_crypt_main {:des "You are in a cramped underground room with many stone coffins lining the walls. There is a very faint odor of rot in the air, overrun by a strong smell of dust and old things. On one of the coffins there is a strange carving of what looks like a dagger next to a small bottle. Hallways extend out fron the room in all directions.",
+		:cath_crypt_main {:des "You are in a cramped underground room with many stone coffins lining the walls. There is a very faint odor of rot in the air, overrun by a strong smell of dust and old things. On one of the coffins there is a strange carving of what looks like a dagger next to a small bottle. Hallways extend out from the room in all directions.",
 							:con {:n :cath_crypt_web, :s :cath_crypt_s, :w :cath_crypt_w, :e :cath_hall}
 							:rinv {}}
 		:cath_crypt_w {:des "You are in a small underground room with stone walls, and a stone floor. There is a strong smell of dust in the air. A hallway leads to the West.",
