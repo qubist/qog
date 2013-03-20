@@ -265,13 +265,18 @@
 		:snow_forest {:des "You find yourself in a snow-covered forest. The evergreen trees shine in the harsh winter sun, and the snow glitters like a thousand tiny diamonds. Wow, that was sorta corny. A stone staircase leads down into the ground, and to the North, there is a clearing of rocky ground.",
 							:con {:n, :snow_cliff, :d :cath_stairs}
 							:rinv {}}
-		:snow_cliff {:des "You are in a small patch of rocky ground in a thick forest of snow-covered pine trees. There is a cliff to the north, and you can see no easier way down than a set of small indentations, were many generations of footsteps have climbed up and down the sheer cliff face. To the south there is a path through the forest.",
+		:snow_cliff {:des "You are in a small patch of rocky ground in a thick forest of snow-covered pine trees. There is a cliff to the North, and you can see no easier way down than a set of small indentations, were many generations of footsteps have climbed up and down the sheer cliff face. To the South there is a path through the forest.",
 							:con {:d :snow_cliff_bottom, :s :snow_forest}
 							:rinv {}}
-		:snow_cliff_bottom {:des "You are at the bottom of a sheer cliff made of smooth, gray rock. There is no way up because the few footholds there were, were recently broken by some bumbling idiot of an adventurure. To the south is an entrance to a pitch black cave that leads into the cliff.",
-							:con {:s :snow_cliff_cave}
+		:snow_cliff_bottom {:des "You are at the bottom of a sheer cliff made of smooth, gray rock. There is no way up because the few footholds there were, were recently broken by some bumbling idiot of an adventurure. To the South is an entrance to a pitch black cave that leads into the cliff.",
+							:con {:s :snow_cliff_cave, :e :snow_cliff_dead}
 							:rinv {}}
-
+		:snow_cliff_dead {:des "You are in a dense forest at the bottom of a sheer cliff. The forest is impenetrable and there is no way up the cliff. To the West lies a small clearing at the bottom of the cliff.",
+							:con {:w :snow_cliff_bottom}
+							:rinv {}}
+		:snow_cliff_cave {:des "You are in a dark cave in a cliff. The exit to the outside lies to the North. FIXME",
+							:con {:n :snow_cliff_bottom}
+							:rinv {}}
 		}
 	)
 )
