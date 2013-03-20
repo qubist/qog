@@ -139,7 +139,9 @@
 					(do (println "The room shakes violently and the door slides open.")
 						(set-riddle-answered :pword_room))
 					(println "The room shakes slightly, but the door does not open."))
-				true (println "talking to one's self is a sign of impending mental collapse.")
+				(and (= location :cath_crypt_main) (re-find #"Romeo|Juliet" (lower-case input)))
+					(println "Nice try.")
+				true (println "Talking to one's self is a sign of impending mental collapse.")
 			))
 		}
 		
