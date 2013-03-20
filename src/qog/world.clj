@@ -127,13 +127,13 @@
 		:zegg_pit {:des "You are in a grimy pit. The floor is covered with old bones and refuse. There is no way up, but there is a door to the West.",
 							:con {:w :pit_room}
 							:rinv {}}
-		:study {:des "You are in a large study with walls, floor and ceiling made of wooden paneling. There is a desk and a chair, and a mural of a hearty adventurer holding a solid silver rock in a dark dungeon covers the east wall. Doors lead to the West and North.",
+		:study {:des "You are in a large study with walls, floor and ceiling made of wooden paneling. There is a desk and a chair, and a mural of a hearty adventurer holding a solid silver rock in a dark dungeon covers the East wall. Doors lead to the West and North.",
 							:con {:n :pit_room, :w :clock_room}
 							:rinv {}}
 		:clock_room {:des "You are in a round, rough-walled room. You can hear a loud \"tic, tock, tic, tock...\" sound from all around you. To the North, there is a thick stone door with no handle or keyhole. Instead, it has three round holes that go into the door. To the West there is a doorway into another room.",
 							:con {:n :silver_key_room, :w :d_room_1, :e :study}
 							:rinv {}}
-		:silver_key_room {:des "You are in a safe-room. Empty vaults line the walls and a small metal chandelier hangs from the ceiling, it's candles have long been un-lit. There is a door to the South.",
+		:silver_key_room {:des "You are in a safe-room. Empty vaults line the walls and a small metal chandelier hangs from the ceiling; its candles have long been un-lit. There is a door to the South.",
 							:con {:s :clock_room}
 							:rinv {:silver_key {:des "a small silver key" :regex #"silver key|key" }}}
 		:d_room_1 {:des "You are in a medium sized, nondescript, rectangular room. There is a large ironbound, oaken door to the West. It has a small silver keyhole in it. A hallway leads to the North, and a doorway goes East.",
@@ -151,7 +151,7 @@
 		:crossroads {:des "You are in a passageway that splits off. One way leads North and one way South. There are two signs here, one pointing North, and one pointing South. The sign pointing North says \"Hither\" The sign pointing South says \"Yon\" The passage also goes back to the East.",
 							:con {:e :d_room_1, :n :bee_hall, :s :mineshaft_top}
 							:rinv {}}
-		:mineshaft_top {:des "You are at the top of a large, vertical mineshaft. It goes strait down into the earth as far as you can see. A metal ladder leads down the side of the mineshaft. To the East, there is an old elevator cage suspended to the ceiling by rusty metal cables. The passageway leads back to the North",
+		:mineshaft_top {:des "You are at the top of a large, vertical mineshaft. It goes straight down into the earth as far as you can see. A metal ladder leads down the side of the mineshaft. To the East, there is an old elevator cage suspended to the ceiling by rusty metal cables. The passageway leads back to the North",
 							:con {:e :mineshaft_elevator, :d :mineshaft_mid, :n :crossroads}
 							:rinv {}}
 		:mineshaft_elevator {:des "You are inside a unsteady, rusted elevator cage. Above you there is a system of pulleys and cables that suspend the elevator from the ceiling. There is no obvious way to control the elevator, except a tiny, red keyhole with the words \"In case of emergency\" inscribed below it. There is an exit to the West.",
@@ -214,13 +214,13 @@
 		:bee_crack {:des "You are in a small crack in a wall. There is an exit to the North.",
 							:con {:n :bee_nest}
 							:rinv {:gold_key {:des "a gold key" :regex #"gold key|key"}}}
-		:bee_ladder {:des "You are in small room with a ladder leading up. You can make out a faint light at the top of the ladder. There is a door to the south.",
+		:bee_ladder {:des "You are in small room with a ladder leading up. You can make out a faint light at the top of the ladder. There is a door to the South.",
 							:con {:u :boulder_field, :s :bee_hall}
 							:rinv {}}
 		:boulder_field {:des "You find yourself in a grassy field. In the center of the field stands a huge boulder. It has been worn smooth by the wind and looks unclimbable. Paths lead North and South through the thick wilderness of forest that surrounds the clearing, and a ladder leads down, into the ground.",
 							:con {:d :bee_ladder, :n :sunf, :s :cath_courtyard}
 							:rinv {}}
-		:sunf {:des "You find yourself in a field of sunflowers that are each at least double your hight. They are all facing towards the East. The edge of the sunflowers is to the South, and to the West is a path that leads through the sunflowers.",
+		:sunf {:des "You find yourself in a field of sunflowers that are each at least double your height. They are all facing towards the East. The edge of the sunflowers is to the South, and to the West is a path that leads through the sunflowers.",
 							:con {:s :boulder_field, :w :sunf_clearing}
 							:rinv {}}
 		:sunf_clearing {:des "You are in a clearing in a field of sunflowers. To the East, a path leads.",
@@ -232,7 +232,7 @@
 		:cath_nave {:des "You are in the nave (large part where the people sit; who taught you history?) of a very small cathedral. So small, in fact, that your head almost touches the ceiling. The exit lies to the West, and to the East is a very small altar that stands in the center of the cathedral.",
 							:con {:w :cath_courtyard, :e :cath_altar}
 							:rinv {}}
-		:cath_altar {:des "You are at the very small altar in the center of a very small cathedral. So small, in fact, that you have to stoop slightly, and cannot stand up strait for fear of breaking the roof of the cathedral. To the West there is the nave of the cathedral, to the East, the choir, and to the North and South, the transepts.",
+		:cath_altar {:des "You are at the very small altar in the center of a very small cathedral. So small, in fact, that you have to stoop slightly, and cannot stand up straight for fear of breaking the roof of the cathedral. To the West there is the nave of the cathedral, to the East, the choir, and to the North and South, the transepts.",
 							:con {:w :cath_nave, :n :cath_ntransc, :s :cath_stransc, :e :cath_choir}
 							:rinv {}}
 		:cath_choir {:des "You are in the very small choir (the part behind the altar where the relics are; who taught you history?) of a very small cathedral. There are five round chapels (small areas where the relics are kept; who taught you history?) here, but sadly, they are all empty, the relics probably having been stolen by some band of thieves long ago. The altar lies to the West",
