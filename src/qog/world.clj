@@ -238,7 +238,7 @@
 		:cath_choir {:des "You are in the very small choir (the part behind the altar where the relics are; who taught you history?) of a very small cathedral. There are five round chapels (small areas where the relics are kept; who taught you history?) here, but sadly, they are all empty, the relics probably having been stolen by some band of thieves long ago. The altar lies to the West",
 							:con {:w :cath_altar}
 							:rinv {}}
-		:cath_ntransc {:des "You are in the North part of a very small transept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a tiny cathedral. There is a huge and magnificent stained glass window on the wall that is to the North. A metal plaque on the wall says: \"Drim gniraelc nus yek\" The altar lies to the South.",
+		:cath_ntransc {:des "You are in the North part of a very small transept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a tiny cathedral. There is a huge and magnificent stained glass window on the wall that is to the North. A metal plaque on the wall says: \"Drim denok nus yek\" The altar lies to the South.",
 							:con {:s :cath_altar}
 							:rinv {}}
 		:cath_stransc {:des "You are in the South part of a tiny transept (the part of the cathedral crossing at a right angle to the nave; who taught you history?) in a very small cathedral. There is a large, oaken, ironbound trapdoor on the floor. The altar lies to the North.",
@@ -247,10 +247,10 @@
 		:cath_crypt_web {:des "You are in an underground tunnel that leads South. It is completely filled with spider webs. A ladder leads up and out of the tunnel.",
 							:con {:u :cath_stransc, :s :cath_crypt_main}
 							:rinv {}}
-		:cath_crypt_main {:des "You are in a cramped underground room with many stone coffins lining the walls. There is a very faint odor of rot in the air, overrun by a strong smell of dust and old things. On one of the coffins there is a strange carving of what looks like a dagger next to a small bottle. Hallways extend out from the room in all directions.",
+		:cath_crypt_main {:des "You are in a cramped underground room with many stone coffins lining the walls. There is a very faint odor of rot in the air, overridden by a strong smell of dust and old things. On one of the coffins there is a strange carving of what looks like a dagger next to a small bottle. Hallways extend out from the room in all directions.",
 							:con {:n :cath_crypt_web, :s :cath_crypt_s, :w :cath_crypt_w, :e :cath_hall}
 							:rinv {}}
-		:cath_crypt_w {:des "You are in a small underground room with stone walls, and a stone floor. There is a strong smell of dust in the air. A hallway leads to the West.",
+		:cath_crypt_w {:des "You are in a small underground room with stone walls, and a stone floor. There is a strong smell of dust in the air. A hallway leads to the East.",
 							:con {:e :cath_crypt_main}
 							:rinv {}}
 		:cath_crypt_s {:des "You are in a small underground room that is slightly damp and smells like damp dirt. A hallway leads to the North.",
@@ -265,11 +265,11 @@
 		:snow_forest {:des "You find yourself in a snow-covered forest. The evergreen trees shine in the harsh winter sun, and the snow glitters like a thousand tiny diamonds. Wow, that was sorta corny. A stone staircase leads down into the ground, and to the North, there is a clearing of rocky ground.",
 							:con {:n, :snow_cliff, :d :cath_stairs}
 							:rinv {}}
-		:snow_cliff {:des "You are in a small patch of rocky ground in a thick forest of snow-covered pine trees. There is a cliff to the North, and you can see no easier way down than a set of small indentations, were many generations of footsteps have climbed up and down the sheer cliff face. To the South there is a path through the forest.",
+		:snow_cliff {:des "You are in a small patch of rocky ground in a thick forest of snow-covered pine trees. To the North is the edge of a cliff, and you can see no easier way down than a set of small indentations, where many generations of footsteps have climbed up and down the sheer cliff face. To the South there is a path through the forest.",
 							:con {:d :snow_cliff_bottom, :s :snow_forest}
 							:rinv {}}
-		:snow_cliff_bottom {:des "You are at the bottom of a sheer cliff made of smooth, gray rock. There is no way up because the few footholds there were, were recently broken by some bumbling idiot of an adventurure. To the South is an entrance to a pitch black cave that leads into the cliff.",
-							:con {:s :snow_cliff_cave, :e :snow_cliff_dead}
+		:snow_cliff_bottom {:des "You are at the bottom of a sheer cliff made of smooth, gray rock. There is no way up because the few footholds that were there have recently been broken by some bumbling idiot of an adventurer. To the South is an entrance to a pitch black cave that leads into the cliff.",
+							:con {:s :snow_cliff_passage, :e :snow_cliff_dead}
 							:rinv {}}
 		:snow_cliff_dead {:des "You are in a dense forest at the bottom of a sheer cliff. The forest is impenetrable and there is no way up the cliff. To the West lies a small clearing at the bottom of the cliff.",
 							:con {:w :snow_cliff_bottom}
