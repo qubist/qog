@@ -1,11 +1,14 @@
 # Quest for the Ojeran Gemerald
 
 My first text based adventure game in which you, an adventurer, explore the depths of a dangerous dungeon in order to find the fabled Ojeran Gemerald.
+
 Inspired by the good old (and I mean *old*) text based game, *Zork*
 
 ## Background
 
 I built this game in 2013 as part of my ClojureScript website back then: "[The Nebula](github.com/qubist/the-nebula)". In 2021, inspired by my new website's URL [will.quest](https://will.quest), I updated the game to run more easily in the command-line and also created a [Replit](https://replit.com/@qubist/qog) so it can be played online.
+
+Playing with a pad of paper and a pencil nearby might be helpful.
 
 ## Play online
 
