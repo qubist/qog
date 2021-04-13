@@ -21,6 +21,7 @@
 		(and (= location :clock_room) (= con :silver_key_room) (door-closed? :door_to_silver_key_room)) "The door is locked."
 		(and (= location :bee_hall) (= con :bee_ladder) (door-closed? :door_to_bee_ladder)) "The door is locked."
 		(and (= location :cath_stransc) (= con :cath_crypt_web) (door-closed? :door_to_cath_crypt_web)) "The trapdoor is locked."
+		(and (= location :end_main) (= con :space) (door-closed? :door_to_space)) "The door is locked but a huge black key handle protrudes from its center."
 
 		;robj
 		(and (= location :yard) (= con :outside) (robj-contains? :yard :dog)) "The dog growls and blocks your path."
@@ -167,7 +168,7 @@
 								;door that do something when they open
 								(and (= location :clock_room) (contains? inv (and :black_pebble :gray_pebble :white_pebble))) (do (set-door-open :door_to_silver_key_room "The pebbles fly out of your hand into the holes, and roll smoothly down into the depths of the door. The door swings open.") (invrm :black_pebble) (invrm :gray_pebble) (invrm :white_pebble))
 								(and (= location :mineshaft_elevator) (contains? inv :crystal_key)) (do (println "As you turn the key in the lock, the cables supporting the elevator cage snap and you start to plummet down to the bottom of the elevator shaft. Just when you think that you are about to hit the bottom and be turned into a adventurer pancake breakfast for the nearest monster, there is a blinding flash of red light, and you feel yourself being teleported.") (set-location :outside_elevator))
-								(= location :end_main) (do (set-door-open :door-to-space "The door unlocks and swings open revealing a black abyss filled with bright, shining stars.") (change-room-des :end_main "You are in a hallway with smooth, bright white walls. It leads north into a white room, and south to a doorway through which is a black abyss filled with stars."))
+								(= location :end_main) (do (set-door-open :door_to_space "The door unlocks and swings open revealing a black abyss filled with bright, shining stars.") (change-room-des :end_main "You are in a hallway with smooth, bright white walls. It leads north into a white room, and south to a doorway through which is a black abyss filled with stars."))
 
 								;failure notices
 								(or (= location :cave_door) (= location :mineshaft_elevator) (= location :d_room_1) (= location :cath_stransc)) (println "You do not have the correct key.")
