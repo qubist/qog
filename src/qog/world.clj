@@ -18,7 +18,7 @@
 	(def world
 
 ;room
-		{:starting_chamber {:des "You are in a small, bare room with an empty chest in the corner. There are doors heading in all four directions.", 
+		{:starting_chamber {:des "You are in a small, bare room with an empty chest in the corner. There are doors heading in all four directions.",
 							:con {:n :kitchen, :s :yard, :e :bedroom, :w :cellar_stairs}
 							:rinv {}}
 		:kitchen {:des "You are in a kitchen with a stove, cupboards and shelves.",
@@ -66,7 +66,7 @@
 							:rinv {:water_bottle {:des "a glass bottle containing a quantity of water" :regex #"water|bottle|glass"}}}
 		:forest {:des "You find yourself in a small clearing surrounded by a dense forest.",
 							:con {:e :pool}
-							:rinv {:black_pebble {:des "a round, black pebble" :regex #"round black pebble|black pebble|round pebble|pebble"}}}						
+							:rinv {:black_pebble {:des "a round, black pebble" :regex #"round black pebble|black pebble|round pebble|pebble"}}}
 		:cave {:des "You are in a cave lit by torches fastened to the walls. There is a rickety wooden ladder that leads up. You can see the outlines of strange markings on the walls.",
 							:con {:w :cave_door, :u :archive}
 							:rinv {}}
@@ -305,7 +305,7 @@
 	)
 
 (defn search-any-inv [item-str inventory]
-	(let [inv-patterns (get-inventory-patterns inventory) 
+	(let [inv-patterns (get-inventory-patterns inventory)
 		  found-items (sort-by (fn [[_ s]] (- (count s)))  (map (fn [[item pattern]] [item (re-find pattern item-str)]) inv-patterns))
 		  num-items (count found-items)]
 	 (cond (= num-items 1) (first (first found-items))
@@ -316,8 +316,8 @@
 									:_unclear_
 									)
 								)
-			
-		
+
+
 		   true nil
 		)))
 
@@ -409,7 +409,7 @@
 	(let [old-room (get world room-name)
 	 	  [new-room item-text] (rm-item-from-room old-room item)]
 		(update-world room-name new-room)))
-		
+
 ;remove obj from world
 (defn rm-obj-from-world [room-name item]
 	(let [old-room (get world room-name)
@@ -423,7 +423,7 @@
 	 	  new-room (add-item-to-room old-room item-name item-text)]
 		(invrm item-name)
 		(update-world room-name new-room)))
-		
+
 ;move items from rooms into other rooms
 (defn move-item [src-room-name dest-room-name item-name]
 	(let [src-room (get world src-room-name)
@@ -462,10 +462,10 @@
 			(println (str "You see:\n" (get-inventory-descriptions inv)))
 			)))
 
-(defn print-items-in-room [] 
+(defn print-items-in-room []
 	(print-stuff-in-room :rinv)
 	(print-stuff-in-room :robj)
-	)			
+	)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

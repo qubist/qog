@@ -22,7 +22,7 @@
 		(and (= con :flooded_room_1) (= location :mine_room_1)) (do (set-location :flooded_room_1) "You fall through the hole and into shallow water.")
 		true false))
 
-			
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;declare functions in order to fix circular dependencys.
@@ -35,30 +35,30 @@
 ;commands
 (def commands
 	(array-map
-		
+
 	:n {:name "n" :helptext "Description: used to travel to the North\nUsage: n" :fn (fn [_ _] (move "n"))}
 	:s {:name "s" :helptext "Description: used to travel to the South\nUsage: s" :fn (fn [_ _] (move "s"))}
 	:e {:name "e" :helptext "Description: used to travel to the East\nUsage: e" :fn (fn [_ _] (move "e"))}
 	:w {:name "w" :helptext "Description: used to travel to the West\nUsage: w" :fn (fn [_ _] (move "w"))}
 	:u {:name "u" :helptext "Description: used to go up\nUsage: u" :fn (fn [_ _] (move "u"))}
 	:d {:name "d" :helptext "Description: used to go down\nUsage: d" :fn (fn [_ _] (move "d"))}
-	
+
 	:get {
 		:name "get"
 		:helptext "Description: used to pick up items\nUsage: get <item>"
-	   	:fn (fn [item-str input] 
+	   	:fn (fn [item-str input]
 			(let [room (location world)
 				  item (search-rinv item-str room)]
 				(cond (nil? item) (println "You can't do that.")
 					  (= item :_unclear_) (println (str "Which " item-str "? Please be more specific."))
-					  (and (= location :zegg_room) (= item :zegg)) (do 
+					  (and (= location :zegg_room) (= item :zegg)) (do
 																   (do-get-item item)
 																   (println "The floor opens up from under you and you fall into a pit!")
 																   (set-location :zegg_pit))
 					  true (do-get-item item)
 						   )))
 		}
-		
+
 	:put {
 		:name "put"
 		:helptext "Description: used to put down items\nUsage: put <item>"
@@ -100,14 +100,14 @@
 											(change-room-des :mineshaft_elevator "You are inside a unsteady, rusted elevator cage. Above you there is a system of pulleys and cables that suspend the elevator from the ceiling. There is no obvious way to control the elevator, except a tiny, red keyhole with the words \"In case of emergency\" enscribed below it. The kehole is glowing with red light. There is an exit to the West.")))
 
 					))}
-					
+
 	:inv {
 		:name "inv"
 		:helptext "Description: used to display the items you are carrying\nUsage: inv"
 		:fn (fn [_ _]
 			(if (empty? inv) (println "You are empty handed.")
 							 (println (str "You have:\n" (get-inventory-descriptions inv) "."))))}
-							
+
 	:unlock {
 		:name "unlock"
 		:helptext "Description: used to unlock doors with keys or other items\nUsage: unlock <target>"
@@ -124,7 +124,7 @@
 								(not (or (= location :cave_door) (= location :mineshaft_elevator) (= location :clock_room) (= location :d_room_1) (= location :cath_stransc))) (println "There is no locked door here.")
 							 )
 							))}
-							
+
 	:say {
 		:name "say"
 		:helptext "Description: used to talk to in game\nUsage: say <your text here>"
@@ -144,7 +144,7 @@
 				true (println "Talking to one's self is a sign of impending mental collapse.")
 			))
 		}
-		
+
 	:read {
 		:name "read"
 		:helptext "Description: used to read items\nUsage: read <item>"
@@ -180,9 +180,9 @@
 				(= command "goto") (set-location (keyword param))
 				true (println (str "\"" p "\"" " is not a dev command"))
 				))
-			
+
 			)}
-						
+
 	:help {
 		:name "help"
 		:helptext "Description: used to display the help menu\nUsage: help"
@@ -195,16 +195,16 @@
 				)
 			))
 			}
-		
-		
-			
+
+
+
 	:quit {
 		:name "quit"
 		:helptext "Description: used to exit out of the game\nUsage: quit"
 		:fn (fn [_ _]
 			(set-not-done false)
 			)}
-		
+
 	)
 )
 
@@ -215,7 +215,7 @@
 	(let [room (location world)
 		  con ((keyword direction) (:con room))]
 		(let [error (illegal-move? con)]
-			(if error 
+			(if error
 				(println error)
 				(set-location con)
 			))))
@@ -235,7 +235,7 @@
 (defn find-command-key [command-str]
 	(some (fn [[key val]] (if (= command-str (get val :name)) key nil)) commands))
 
-;finding command 
+;finding command
 (defn find-command [command-str]
 	(let [command-key (find-command-key command-str)]
 		(if (nil? command-key) nil (get commands command-key))))
@@ -252,11 +252,11 @@
 	  command (find-command c)
 	]
 	(if (nil? command)
-		(println (random-answer 
+		(println (random-answer
 					(let [x (str "What is this \"" input "\" of which you speak?")]
 						[x x x (str "What do you mean, \"" input "\"?") (str "I don't know what \"" input "\" means.")]
 					)))
-		
+
 		((get command :fn) p input)
 	)
 ))

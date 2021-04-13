@@ -2,7 +2,7 @@
 (ns qog.core)
 (use 'qog.commands)
 (use 'qog.world)
-(defn rl [] 
+(defn rl []
 	(use 'qog.core :reload)
 	(use 'qog.commands :reload)
 	(use 'qog.world :reload)
