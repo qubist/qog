@@ -1,4 +1,4 @@
-# QOG
+# Quest for the Ojeran Gemerald
 
 My first text based adventure game in which you, an adventurer, explore the depths of a dangerous dungeon in order to find the fabled Ojeran Gemerald.
 Inspired by the good old (and I mean *old*) text based game, *Zork*
