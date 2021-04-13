@@ -36,7 +36,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;code for exiting
-(defn p []
+(defn -main []
 	(rl)
 	(initialize)
 	(while not_done
