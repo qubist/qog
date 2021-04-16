@@ -14,7 +14,7 @@ Playing with a pad of paper and a pencil nearby might be helpful.
 
 You can now play Quest for the Ojeran Gemerald online on [Replit](https://replit.com/@qubist/qog).
 
-1. Go to https://replit.com/@qubist/qog and click "Run"
+1. Go to https://replit.com/@qubist/qog and click "Run". It can take a really long time to load but it should work.
 
 Game instructions are provided on launch.
 
